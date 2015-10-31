@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+    <notice>
+        <name>Android support libraries 23.1.0</name>
+        <copyright>Copyright (C) 2015 The Android Open Source Project.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Butter Knife 7.1.0</name>
+        <copyright>Copyright 2013 Jake Wharton.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Licenses Dialog 1.8.0</name>
+        <copyright>Copyright 2013 Philip Schiffer.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+</notices>
