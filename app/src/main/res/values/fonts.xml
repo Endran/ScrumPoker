@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
+  -->
+
+<resources>
+    <string name="font_sans_tall_x" translatable="false">fonts/MKSansTallX.ttf</string>
+    <string name="font_sans_tall_x_medium" translatable="false">fonts/MKSansTallXMedium.ttf</string>
+    <string name="font_sans_tall_x_light" translatable="false">fonts/MKSansTallXLight.ttf</string>
+    <string name="font_serif_tall_x" translatable="false">fonts/MKSerifTallX.ttf</string>
+</resources>

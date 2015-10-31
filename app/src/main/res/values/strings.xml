@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Scrum Poker</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_licenses">Licenses</string>
+
+    <string name="zero">0</string>
+    <string name="half">&#189;</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="five">5</string>
+    <string name="eigth">8</string>
+    <string name="thirteen">13</string>
+    <string name="twenty">20</string>
+    <string name="forty">40</string>
+    <string name="hundred">100</string>
+    <string name="infinite">∞</string>
+    <string name="unknown">\?</string>
+    <string name="coffee">Coffee</string>
+
+</resources>
