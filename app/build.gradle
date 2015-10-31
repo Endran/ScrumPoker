@@ -3,20 +3,30 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "nl.endran.scrumpoker"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "0.1"
+        versionName "0.1 (${getDetails()})"
+    }
+
+    signingConfigs {
+        release {
+            storeFile project.rootProject.file('keystore.jks')
+            storePassword 'xxx'
+            keyAlias 'ScrumPoker'
+            keyPassword 'xxx'
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -59,4 +69,16 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+}
+
+
+def getDetails() {
+    def details = """git rev-parse --short HEAD""".execute().text.trim()
+    def workingBranch = """git rev-parse --abbrev-ref HEAD""".execute().text.trim()
+
+    if (!workingBranch.equals('master')) {
+        details += ' ' + workingBranch;
+    }
+
+    return details
 }
