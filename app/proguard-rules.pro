@@ -16,7 +16,6 @@
 #   public *;
 #}
 
-
 -dontnote **ILicensingService
 
 -keep class butterknife.** { *; }
@@ -76,3 +75,6 @@
 # Ignore google libs
 -dontwarn com.google.**
 
+-keep class android.support.v7.widget.LinearLayoutManager { *; }
+-keep class android.support.v7.widget.GridLayoutManager { *; }
+-keep class android.support.v7.widget.RecyclerView { *; }
