@@ -4,6 +4,7 @@
 
 package nl.endran.scrumpoker;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -20,13 +21,18 @@ public class Analytics {
     @Nullable
     private final Tracker tracker;
 
-    public Analytics(@NonNull final GoogleAnalytics analytics) {
-        if (BuildConfig.VERSION_NAME.contains("master")) {
-            tracker = analytics.newTracker(R.xml.global_tracker);
+    public Analytics(@NonNull final Context context, @NonNull final GoogleAnalyticsFactory analyticsFactory) {
+        if (shouldInitTracker()) {
+            GoogleAnalytics googleAnalytics = analyticsFactory.create(context);
+            tracker = googleAnalytics.newTracker(R.xml.global_tracker);
             tracker.enableAdvertisingIdCollection(true);
         } else {
             tracker = null;
         }
+    }
+
+    private boolean shouldInitTracker() {
+        return BuildConfig.VERSION_NAME.contains("master");
     }
 
     public void trackPage(@NonNull String pageName) {

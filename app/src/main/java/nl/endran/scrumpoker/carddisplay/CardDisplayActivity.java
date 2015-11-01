@@ -7,6 +7,7 @@ package nl.endran.scrumpoker.carddisplay;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import nl.endran.scrumpoker.Analytics;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.cardselection.CardValue;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class CardDisplayActivity extends AppCompatActivity {
 
@@ -30,11 +32,11 @@ public class CardDisplayActivity extends AppCompatActivity {
         return intent;
     }
 
-//    @Override
-//    @CallSuper
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-//    }
+    @Override
+    @CallSuper
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

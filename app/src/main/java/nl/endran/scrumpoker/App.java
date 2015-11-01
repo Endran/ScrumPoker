@@ -6,10 +6,7 @@ package nl.endran.scrumpoker;
 
 import android.app.Application;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
-
-import io.fabric.sdk.android.Fabric;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class App extends Application {
 
@@ -19,23 +16,27 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (BuildConfig.VERSION_NAME.contains("master")) {
-            Fabric.with(this, new Crashlytics());
-        }
-
-        analytics = new Analytics(GoogleAnalytics.getInstance(this));
-
-//        initCalligraphy();
+        initCrashTracking();
+        initAnalytics();
+        initCalligraphy();
     }
 
-//    protected void initCalligraphy() {
-//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-//                        .setDefaultFontPath(getString(R.string.font_sans_tall_x))
-//                        .setFontAttrId(R.attr.fontPath)
-//                        .build()
-//        );
-//    }
+    private void initCrashTracking() {
+        CrashTracking crashTracking = new CrashTracking(new FabricFactory());
+        crashTracking.start(this);
+    }
 
+    private void initAnalytics() {
+        analytics = new Analytics(this, new GoogleAnalyticsFactory());
+    }
+
+    protected void initCalligraphy() {
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        //.setDefaultFontPath(getString(R.string.font_sans_tall_x))
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
+    }
 
     public Analytics getAnalytics() {
         return analytics;
