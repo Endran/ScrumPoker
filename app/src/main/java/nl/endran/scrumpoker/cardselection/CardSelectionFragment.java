@@ -54,8 +54,6 @@ public class CardSelectionFragment extends Fragment {
                             new Pair<>(view, activity.getString(R.string.transition_card)));
                     ActivityOptionsCompat sceneTransitionAnimation = ActivityOptionsCompat
                             .makeSceneTransitionAnimation(activity, pairs);
-
-                    // Start the activity with the participants, animating from one to the other.
                     transitionBundle = sceneTransitionAnimation.toBundle();
                 }
 
@@ -65,11 +63,7 @@ public class CardSelectionFragment extends Fragment {
 
         adapter.setCardValues(CardValue.values());
 
-        recyclerView.setLayoutManager(new
-
-                GridLayoutManager(getContext(),
-
-                3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(adapter);
 
         return rootView;
