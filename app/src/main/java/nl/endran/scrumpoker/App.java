@@ -18,7 +18,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Fabric.with(this, new Crashlytics());
+        if (BuildConfig.VERSION_NAME.contains("master")) {
+            Fabric.with(this, new Crashlytics());
+        }
 
 //        initCalligraphy();
     }
@@ -35,6 +37,7 @@ public class App extends Application {
 
     public Tracker getDefaultTracker() {
         if (tracker == null) {
+            // should be disabled for non master builds.
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             tracker = analytics.newTracker(R.xml.global_tracker);
             tracker.enableAdvertisingIdCollection(true);

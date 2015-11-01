@@ -97,10 +97,5 @@ dependencies {
 def getDetails() {
     def details = """git rev-parse --short HEAD""".execute().text.trim()
     def workingBranch = """git rev-parse --abbrev-ref HEAD""".execute().text.trim()
-
-    if (!workingBranch.equals('master')) {
-        details += ' ' + workingBranch;
-    }
-
-    return details
+    return details + ' ' + workingBranch
 }
