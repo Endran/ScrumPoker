@@ -6,14 +6,19 @@ package nl.endran.scrumpoker;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+
+import io.fabric.sdk.android.Fabric;
 
 public class App extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Fabric.with(this, new Crashlytics());
 
 //        initCalligraphy();
     }
