@@ -13,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import nl.endran.scrumpoker.Analytics;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.carddisplay.CardDisplayActivity;
@@ -36,11 +34,8 @@ public class CardSelectionFragment extends Fragment {
         CardSelectionAdapter adapter = new CardSelectionAdapter(new CardSelectionAdapter.Listener() {
             @Override
             public void onCardSelected(final View view, final CardValue cardValue) {
-                Tracker tracker = ((App) (getContext().getApplicationContext())).getDefaultTracker();
-                tracker.send(new HitBuilders.EventBuilder()
-                        .setCategory("Action")
-                        .setAction("CardValue:" + getString(cardValue.getStringId()))
-                        .build());
+                Analytics analytics = ((App) (getContext().getApplicationContext())).getAnalytics();
+                analytics.trackEvent("CardValue:" + getString(cardValue.getStringId()));
 
                 getContext().startActivity(CardDisplayActivity.createIntent(getContext(), cardValue));
             }

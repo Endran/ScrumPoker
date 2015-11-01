@@ -8,11 +8,12 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 
 import io.fabric.sdk.android.Fabric;
 
 public class App extends Application {
+
+    private Analytics analytics;
 
     @Override
     public void onCreate() {
@@ -21,6 +22,8 @@ public class App extends Application {
         if (BuildConfig.VERSION_NAME.contains("master")) {
             Fabric.with(this, new Crashlytics());
         }
+
+        analytics = new Analytics(GoogleAnalytics.getInstance(this));
 
 //        initCalligraphy();
     }
@@ -33,15 +36,8 @@ public class App extends Application {
 //        );
 //    }
 
-    private Tracker tracker;
 
-    public Tracker getDefaultTracker() {
-        if (tracker == null) {
-            // should be disabled for non master builds.
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            tracker = analytics.newTracker(R.xml.global_tracker);
-            tracker.enableAdvertisingIdCollection(true);
-        }
-        return tracker;
+    public Analytics getAnalytics() {
+        return analytics;
     }
 }

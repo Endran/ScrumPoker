@@ -13,10 +13,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import butterknife.ButterKnife;
+import nl.endran.scrumpoker.Analytics;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.cardselection.CardValue;
@@ -42,9 +41,8 @@ public class CardDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_display);
 
-        Tracker tracker = ((App) getApplication()).getDefaultTracker();
-        tracker.setScreenName("Image~CardDisplayActivity");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        Analytics analytics = ((App) (getApplication())).getAnalytics();
+        analytics.trackPage("CardDisplayActivity");
 
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();

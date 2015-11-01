@@ -19,8 +19,6 @@ import android.view.View;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import de.psdev.licensesdialog.LicensesDialog;
 
@@ -38,9 +36,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Tracker tracker = ((App) getApplication()).getDefaultTracker();
-        tracker.setScreenName("Image~MainActivity");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        Analytics analytics = ((App) (getApplication())).getAnalytics();
+        analytics.trackPage("MainActivity");
 
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
