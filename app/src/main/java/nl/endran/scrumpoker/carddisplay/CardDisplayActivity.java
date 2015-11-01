@@ -16,7 +16,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import butterknife.ButterKnife;
-import nl.endran.scrumpoker.Analytics;
+import nl.endran.scrumpoker.wrappers.Analytics;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.cardselection.CardValue;

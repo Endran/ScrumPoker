@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import nl.endran.scrumpoker.Analytics;
+import nl.endran.scrumpoker.wrappers.Analytics;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.carddisplay.CardDisplayActivity;

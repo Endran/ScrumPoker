@@ -10,7 +10,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import nl.endran.scrumpoker.DummyAnimatorListener;
+import nl.endran.scrumpoker.animation.DummyAnimatorListener;
 
 public class BounceUpAndDownAnimator {
 

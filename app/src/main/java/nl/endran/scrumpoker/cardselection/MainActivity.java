@@ -2,7 +2,7 @@
  * Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
  */
 
-package nl.endran.scrumpoker;
+package nl.endran.scrumpoker.cardselection;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +22,9 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import de.psdev.licensesdialog.LicensesDialog;
+import nl.endran.scrumpoker.App;
+import nl.endran.scrumpoker.R;
+import nl.endran.scrumpoker.wrappers.Analytics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity

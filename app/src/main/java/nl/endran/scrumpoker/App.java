@@ -6,6 +6,10 @@ package nl.endran.scrumpoker;
 
 import android.app.Application;
 
+import nl.endran.scrumpoker.wrappers.Analytics;
+import nl.endran.scrumpoker.wrappers.CrashTracking;
+import nl.endran.scrumpoker.wrappers.FabricFactory;
+import nl.endran.scrumpoker.wrappers.GoogleAnalyticsFactory;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class App extends Application {
