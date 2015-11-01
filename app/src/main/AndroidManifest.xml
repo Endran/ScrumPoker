@@ -22,8 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".carddisplay.CardDisplayActivity"
-            android:parentActivityName=".cardselection.MainActivity"/>
+            android:parentActivityName=".cardselection.MainActivity"
+            android:theme="@style/AppTheme.CardActivity"/>
+
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
