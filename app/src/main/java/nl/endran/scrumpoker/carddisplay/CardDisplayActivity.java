@@ -8,14 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
+import nl.endran.scrumpoker.BaseActivity;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.cardselection.CardValue;
 
-public class CardDisplayActivity extends AppCompatActivity {
+public class CardDisplayActivity extends BaseActivity {
 
     public static final String CARD_VALUE_KEY = "CARD_VALUE_KEY";
 
@@ -25,21 +25,24 @@ public class CardDisplayActivity extends AppCompatActivity {
         return intent;
     }
 
-//    @Override
-//    @CallSuper
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-//    }
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_display);
 
         CardValue cardValue = getCardValue(getIntent());
 
         TextView textView = ButterKnife.findById(this, R.id.textView);
         textView.setText(cardValue.getStringId());
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_card_display;
+    }
+
+    @Override
+    protected String getPageName() {
+        return "CardDisplayActivity";
     }
 
     private CardValue getCardValue(@NonNull final Intent intent) {

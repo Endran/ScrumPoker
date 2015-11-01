@@ -13,6 +13,12 @@
     </notice>
 
     <notice>
+        <name>Calligraphy 2.1.0</name>
+        <copyright>Copyright 2013 Christopher Jenkins.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
         <name>Licenses Dialog 1.8.0</name>
         <copyright>Copyright 2013 Philip Schiffer.</copyright>
         <license>Apache Software License 2.0</license>
