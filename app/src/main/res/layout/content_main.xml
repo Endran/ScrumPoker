@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     android:id="@+id/contentView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,11 +10,23 @@
     tools:context="nl.endran.scrumpoker.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/test_banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+
     <fragment
+        android:id="@+id/fragmentCardSelection"
         android:name="nl.endran.scrumpoker.cardselection.CardSelectionFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_card_selection"
-        android:id="@+id/fragmentCardSelection"/>
+        android:layout_above="@id/adView"
+        tools:layout="@layout/fragment_card_selection"/>
 
-</FrameLayout>
+</RelativeLayout>

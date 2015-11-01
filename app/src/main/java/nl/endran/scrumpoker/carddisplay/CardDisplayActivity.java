@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -43,6 +45,10 @@ public class CardDisplayActivity extends AppCompatActivity {
         Tracker tracker = ((App) getApplication()).getDefaultTracker();
         tracker.setScreenName("Image~CardDisplayActivity");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         CardValue cardValue = getCardValue(getIntent());
 

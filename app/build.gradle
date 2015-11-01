@@ -41,6 +41,7 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
 
     compile 'com.google.android.gms:play-services-analytics:8.1.0'
+    compile 'com.google.android.gms:play-services-ads:8.1.0'
 
 //    compile "uk.co.chrisjenx:calligraphy:2.1.0@aar"
 //
