@@ -6,6 +6,9 @@ package nl.endran.scrumpoker;
 
 import android.app.Application;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+
 public class App extends Application {
 
     @Override
@@ -22,4 +25,15 @@ public class App extends Application {
 //                        .build()
 //        );
 //    }
+
+    private Tracker tracker;
+
+    public Tracker getDefaultTracker() {
+        if (tracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            tracker = analytics.newTracker(R.xml.global_tracker);
+            tracker.enableAdvertisingIdCollection(true);
+        }
+        return tracker;
+    }
 }

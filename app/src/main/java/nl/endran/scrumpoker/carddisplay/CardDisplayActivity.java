@@ -11,7 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import butterknife.ButterKnife;
+import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.cardselection.CardValue;
 
@@ -35,6 +39,10 @@ public class CardDisplayActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_display);
+
+        Tracker tracker = ((App) getApplication()).getDefaultTracker();
+        tracker.setScreenName("Image~CardDisplayActivity");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         CardValue cardValue = getCardValue(getIntent());
 
