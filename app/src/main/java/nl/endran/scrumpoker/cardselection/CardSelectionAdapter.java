@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 public class CardSelectionAdapter extends RecyclerView.Adapter<CardSelectionViewHolder> {
 
     public interface Listener {
-        void onCardSelected(View view, CardValue cardValue, final int color);
+        void onCardSelected(View view, CardValue cardValue, final int color, final int colorDark);
     }
 
     @NonNull
@@ -41,15 +41,19 @@ public class CardSelectionAdapter extends RecyclerView.Adapter<CardSelectionView
 
         float h = 90 - 90 * ((float) position) / cardValues.length;
         final int color = Color.HSVToColor(new float[]{h, .5f, 1f});
+        final int colorDark = Color.HSVToColor(new float[]{h, .9f, 1f});
 
 //        int color = ContextCompat.getColor(holder.itemView.getContext(), cardValue.getColorId());
         ((CardView) holder.itemView).setCardBackgroundColor(color);
+
+        holder.textViewName.setText(cardValue.toString());
+        holder.textViewName.setBackgroundColor(colorDark);
 
         holder.textView.setText(cardValue.getStringId());
         holder.setListener(new CardSelectionViewHolder.Listener() {
             @Override
             public void onCardClicked() {
-                listener.onCardSelected(holder.itemView, cardValue, color);
+                listener.onCardSelected(holder.itemView, cardValue, color, colorDark);
             }
         });
     }

@@ -3,7 +3,7 @@
     <!-- Exists for inheritance purposes -->
     <style name="ScrumPoker" parent="ScrumPoker.Base"/>
 
-    <style name="ScrumPoker.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ScrumPoker.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -18,9 +18,9 @@
         <!--<item name="android:colorBackground">@color/light_grey</item>-->
     </style>
 
-    <style name="ScrumPoker.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="ScrumPoker.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar"/>
 
-    <style name="ScrumPoker.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="ScrumPoker.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark"/>
 
     <style name="ScrumPoker.CardActivity" parent="ScrumPoker.Base"/>
 

@@ -40,11 +40,11 @@ public class CardSelectionFragment extends Fragment {
 
         CardSelectionAdapter adapter = new CardSelectionAdapter(new CardSelectionAdapter.Listener() {
             @Override
-            public void onCardSelected(final View view, final CardValue cardValue, final int color) {
+            public void onCardSelected(final View view, final CardValue cardValue, final int color, final int colorDark) {
                 Analytics analytics = ((App) (getContext().getApplicationContext())).getAnalytics();
                 analytics.trackEvent("CardValue:" + getString(cardValue.getStringId()));
 
-                Intent intent = CardDisplayActivity.createIntent(getContext(), cardValue, color);
+                Intent intent = CardDisplayActivity.createIntent(getContext(), cardValue, color, colorDark);
 
                 FragmentActivity activity = getActivity();
 

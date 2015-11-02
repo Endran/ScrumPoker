@@ -20,11 +20,13 @@ public class CardDisplayActivity extends BaseActivity {
 
     public static final String CARD_VALUE_KEY = "CARD_VALUE_KEY";
     public static final String COLOR_KEY = "COLOR_KEY";
+    public static final String COLOR_DARK_KEY = "COLOR_DARK_KEY";
 
-    public static Intent createIntent(@NonNull final Context context, final CardValue cardValue, final int color) {
+    public static Intent createIntent(@NonNull final Context context, final CardValue cardValue, final int color, final int colorDark) {
         Intent intent = new Intent(context, CardDisplayActivity.class);
         intent.putExtra(CARD_VALUE_KEY, cardValue);
         intent.putExtra(COLOR_KEY, color);
+        intent.putExtra(COLOR_DARK_KEY, colorDark);
         return intent;
     }
 
@@ -34,8 +36,12 @@ public class CardDisplayActivity extends BaseActivity {
 
         CardValue cardValue = getCardValue(getIntent());
 
-        TextView textView = ButterKnife.findById(this, R.id.textView);
+        TextView textView = ButterKnife.findById(this, R.id.textViewNumber);
         textView.setText(cardValue.getStringId());
+
+        TextView textViewName = ButterKnife.findById(this, R.id.textViewName);
+        textViewName.setText(cardValue.toString());
+        textViewName.setBackgroundColor(getColorDark(getIntent()));
 
         CardView cardView = ButterKnife.findById(this, R.id.cardView);
         cardView.setCardBackgroundColor(getColor(getIntent()));
@@ -57,5 +63,9 @@ public class CardDisplayActivity extends BaseActivity {
 
     private int getColor(@NonNull final Intent intent) {
         return intent.getIntExtra(COLOR_KEY, 0);
+    }
+
+    private int getColorDark(@NonNull final Intent intent) {
+        return intent.getIntExtra(COLOR_DARK_KEY, 0);
     }
 }

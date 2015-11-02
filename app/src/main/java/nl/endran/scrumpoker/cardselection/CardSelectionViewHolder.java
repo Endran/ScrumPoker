@@ -24,8 +24,11 @@ public class CardSelectionViewHolder extends RecyclerView.ViewHolder {
 
     public static final int LAYOUT_ID = R.layout.scrum_card;
 
-    @Bind(R.id.textView)
+    @Bind(R.id.textViewNumber)
     TextView textView;
+
+    @Bind(R.id.textViewName)
+    TextView textViewName;
 
     @Nullable
     private Listener listener;

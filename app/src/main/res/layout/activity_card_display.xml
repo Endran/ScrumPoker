@@ -34,12 +34,28 @@
         android:transitionName="@string/transition_card">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="72sp"
             tools:text="7324"/>
+
+        <TextView
+            android:id="@+id/textViewName"
+            fontPath="@string/font_sans_tall_x_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_card"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/colorAccent"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            tools:text="Eight"
+            tools:ignore="MissingPrefix"/>
 
     </android.support.v7.widget.CardView>
 
