@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:transitionName="@string/transition_card"
     android:layout_height="100dp"
+    app:cardCornerRadius="8dp"
     android:layout_margin="8dp"
     android:elevation="4dp">
 

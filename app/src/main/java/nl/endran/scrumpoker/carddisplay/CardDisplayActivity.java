@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -18,10 +19,12 @@ import nl.endran.scrumpoker.cardselection.CardValue;
 public class CardDisplayActivity extends BaseActivity {
 
     public static final String CARD_VALUE_KEY = "CARD_VALUE_KEY";
+    public static final String COLOR_KEY = "COLOR_KEY";
 
-    public static Intent createIntent(@NonNull final Context context, final CardValue cardValue) {
+    public static Intent createIntent(@NonNull final Context context, final CardValue cardValue, final int color) {
         Intent intent = new Intent(context, CardDisplayActivity.class);
         intent.putExtra(CARD_VALUE_KEY, cardValue);
+        intent.putExtra(COLOR_KEY, color);
         return intent;
     }
 
@@ -33,6 +36,9 @@ public class CardDisplayActivity extends BaseActivity {
 
         TextView textView = ButterKnife.findById(this, R.id.textView);
         textView.setText(cardValue.getStringId());
+
+        CardView cardView = ButterKnife.findById(this, R.id.cardView);
+        cardView.setCardBackgroundColor(getColor(getIntent()));
     }
 
     @Override
@@ -47,5 +53,9 @@ public class CardDisplayActivity extends BaseActivity {
 
     private CardValue getCardValue(@NonNull final Intent intent) {
         return (CardValue) intent.getSerializableExtra(CARD_VALUE_KEY);
+    }
+
+    private int getColor(@NonNull final Intent intent) {
+        return intent.getIntExtra(COLOR_KEY, 0);
     }
 }
