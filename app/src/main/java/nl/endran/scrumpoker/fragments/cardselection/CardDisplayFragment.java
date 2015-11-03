@@ -2,7 +2,7 @@
  * Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
  */
 
-package nl.endran.scrumpoker.carddisplay;
+package nl.endran.scrumpoker.fragments.cardselection;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import nl.endran.scrumpoker.R;
-import nl.endran.scrumpoker.cardselection.CardValue;
 
 public class CardDisplayFragment extends Fragment {
 

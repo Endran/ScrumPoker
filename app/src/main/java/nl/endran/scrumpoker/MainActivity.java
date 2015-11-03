@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import de.psdev.licensesdialog.LicensesDialog;
-import nl.endran.scrumpoker.cardselection.CardSelectionFragment;
+import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends BaseActivity
