@@ -17,14 +17,19 @@ import android.view.ViewGroup;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.codetail.animation.SupportAnimator;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
+import nl.endran.scrumpoker.animation.AnimationManager;
+import nl.endran.scrumpoker.animation.DummySupportAnimatorListener;
 import nl.endran.scrumpoker.wrappers.Analytics;
 
 public class CardSelectionFragment extends Fragment {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    private AnimationManager animationManager = new AnimationManager();
 
     @Nullable
     @Override
@@ -37,14 +42,20 @@ public class CardSelectionFragment extends Fragment {
             public void onCardSelected(final View view, final CardValue cardValue, final int color, final int colorDark) {
                 Analytics analytics = ((App) (getContext().getApplicationContext())).getAnalytics();
                 analytics.trackEvent("CardValue:" + getString(cardValue.getStringId()));
+                final CardDisplayFragment fragment = CardDisplayFragment.createFragment(cardValue, color, colorDark);
 
-                CardDisplayFragment fragment = CardDisplayFragment.createFragment(cardValue, color, colorDark);
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                String name = fragment.getClass().getName();
-                transaction.addToBackStack(name);
-                transaction.replace(R.id.contentFrame, fragment, name);
-                transaction.commit();
+                SupportAnimator disappearAnimation = animationManager.getCircularDisappearAnimation(
+                        recyclerView,
+                        view.getX() + view.getMeasuredWidth() / 2,
+                        view.getY() + view.getMeasuredHeight() / 2);
+
+                disappearAnimation.addListener(new DummySupportAnimatorListener() {
+                    @Override
+                    public void onAnimationEnd() {
+                        showFragment(fragment);
+                    }
+                });
+                disappearAnimation.start();
             }
         });
 
@@ -54,6 +65,15 @@ public class CardSelectionFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return rootView;
+    }
+
+    private void showFragment(final CardDisplayFragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        String name = fragment.getClass().getName();
+        transaction.addToBackStack(name);
+        transaction.replace(R.id.contentFrame, fragment, name);
+        transaction.commit();
     }
 
     @Override

@@ -8,7 +8,7 @@ import android.content.Context;
 import android.support.annotation.AnimRes;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -16,6 +16,8 @@ import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 
 public class AnimationManager {
+
+    public static final int DURATION = 500;
 
     public AnimationManager() {
     }
@@ -25,7 +27,6 @@ public class AnimationManager {
 
         int radius = getRadius(view.getWidth(), view.getHeight());
         SupportAnimator animator = createCircularSupportAnimator(view, (int) centerX, (int) centerY, radius, 0);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.addListener(new SetInvisibleOnSupportAnimatorEndListener(view));
 
         return animator;
@@ -35,7 +36,10 @@ public class AnimationManager {
     protected SupportAnimator createCircularSupportAnimator(final @NonNull View view,
                                                             final int centerX, final int centerY,
                                                             final int startRadius, final int endRadius) {
-        return ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
+        SupportAnimator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
+        animator.setDuration(DURATION);
+        animator.setInterpolator(new AccelerateInterpolator());
+        return animator;
     }
 
     @NonNull
@@ -43,7 +47,6 @@ public class AnimationManager {
 
         int radius = getRadius(view.getWidth(), view.getHeight());
         SupportAnimator animator = createCircularSupportAnimator(view, (int) centerX, (int) centerY, 0, radius);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.addListener(new SetVisibleOnSupportAnimatorStartListener(view));
 
         return animator;
