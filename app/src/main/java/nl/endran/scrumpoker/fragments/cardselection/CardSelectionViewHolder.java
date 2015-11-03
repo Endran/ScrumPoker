@@ -6,6 +6,7 @@ package nl.endran.scrumpoker.fragments.cardselection;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class CardSelectionViewHolder extends RecyclerView.ViewHolder {
 
     public static final int LAYOUT_ID = R.layout.scrum_card;
 
+    CardView cardView;
+
     @Bind(R.id.textViewNumber)
     TextView textView;
 
@@ -32,12 +35,11 @@ public class CardSelectionViewHolder extends RecyclerView.ViewHolder {
 
     @Nullable
     private Listener listener;
-    private BounceUpAndDownAnimator animator;
 
-    public CardSelectionViewHolder(@NonNull final LayoutInflater layoutInflater, @NonNull final ViewGroup parent, @NonNull final BounceUpAndDownAnimator animator) {
+    public CardSelectionViewHolder(@NonNull final LayoutInflater layoutInflater, @NonNull final ViewGroup parent) {
         super(layoutInflater.inflate(LAYOUT_ID, parent, false));
-        this.animator = animator;
         ButterKnife.bind(this, itemView);
+        cardView = (CardView) itemView;
     }
 
     public void setListener(@Nullable final Listener listener) {
@@ -46,15 +48,6 @@ public class CardSelectionViewHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.clickView)
     public void onClickViewClicked() {
-        animator.animate(itemView, new BounceUpAndDownAnimator.Listener() {
-            @Override
-            public void onFinished() {
-                informListener();
-            }
-        });
-    }
-
-    private void informListener() {
         if (listener != null) {
             listener.onCardClicked();
         }

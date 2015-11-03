@@ -7,7 +7,6 @@ package nl.endran.scrumpoker.fragments.cardselection;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,7 @@ public class CardSelectionAdapter extends RecyclerView.Adapter<CardSelectionView
     @Override
     public CardSelectionViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return new CardSelectionViewHolder(layoutInflater, parent, new BounceUpAndDownAnimator());
+        return new CardSelectionViewHolder(layoutInflater, parent);
     }
 
     @Override
@@ -43,8 +42,7 @@ public class CardSelectionAdapter extends RecyclerView.Adapter<CardSelectionView
         final int color = Color.HSVToColor(new float[]{h, .5f, 1f});
         final int colorDark = Color.HSVToColor(new float[]{h, .9f, 1f});
 
-//        int color = ContextCompat.getColor(holder.itemView.getContext(), cardValue.getColorId());
-        ((CardView) holder.itemView).setCardBackgroundColor(color);
+        holder.cardView.setCardBackgroundColor(color);
 
         holder.textViewName.setText(cardValue.toString());
         holder.textViewName.setBackgroundColor(colorDark);
