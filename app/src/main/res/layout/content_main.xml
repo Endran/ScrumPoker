@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".cardselection.MainActivity"
+    tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <com.google.android.gms.ads.AdView
@@ -22,12 +22,11 @@
         ads:adUnitId="@string/banner_ad_unit_id">
     </com.google.android.gms.ads.AdView>
 
-    <fragment
-        android:id="@+id/fragmentCardSelection"
-        android:name="nl.endran.scrumpoker.cardselection.CardSelectionFragment"
+    <FrameLayout
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/adView"
-        tools:layout="@layout/fragment_card_selection"/>
+        android:layout_above="@id/adView">
+    </FrameLayout>
 
 </RelativeLayout>

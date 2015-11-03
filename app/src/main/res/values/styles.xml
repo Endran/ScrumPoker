@@ -22,6 +22,4 @@
 
     <style name="ScrumPoker.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark"/>
 
-    <style name="ScrumPoker.CardActivity" parent="ScrumPoker.Base"/>
-
 </resources>

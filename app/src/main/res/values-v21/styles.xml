@@ -4,8 +4,5 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="ScrumPoker.CardActivity">
-        <item name="android:windowSharedElementEnterTransition">@transition/card_enter</item>
-    </style>
 </resources>
 

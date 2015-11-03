@@ -2,7 +2,7 @@
  * Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
  */
 
-package nl.endran.scrumpoker.cardselection;
+package nl.endran.scrumpoker;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.support.annotation.CallSuper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import de.psdev.licensesdialog.LicensesDialog;
-import nl.endran.scrumpoker.BaseActivity;
-import nl.endran.scrumpoker.R;
+import nl.endran.scrumpoker.cardselection.CardSelectionFragment;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends BaseActivity
@@ -55,6 +56,12 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        CardSelectionFragment fragment = new CardSelectionFragment();
+        transaction.add(R.id.contentFrame, fragment, fragment.getClass().getName());
+        transaction.commit();
     }
 
     @Override
