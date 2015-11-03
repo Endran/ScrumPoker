@@ -9,6 +9,8 @@
              android:layout_height="match_parent"
              android:orientation="vertical"
              tools:context=".MainActivity"
+             android:clickable="true"
+             android:background="@color/fragmentBackground"
              android:id="@+id/frameLayoutQuickSettings"
              tools:ignore="MissingPrefix">
 
