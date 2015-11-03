@@ -14,12 +14,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import nl.endran.scrumpoker.BuildConfig;
 import nl.endran.scrumpoker.R;
-import nl.endran.scrumpoker.wrappers.GoogleAnalyticsFactory;
 
-/**
- * (C) Koninklijke Philips N.V., 2015.
- * All rights reserved.
- */
 public class Analytics {
 
     @Nullable

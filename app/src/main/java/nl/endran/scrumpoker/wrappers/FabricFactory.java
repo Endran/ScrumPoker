@@ -9,10 +9,6 @@ import android.content.Context;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
 
-/**
- * (C) Koninklijke Philips N.V., 2015.
- * All rights reserved.
- */
 public class FabricFactory {
 
     public Fabric create(Context context, Kit... kits) {
