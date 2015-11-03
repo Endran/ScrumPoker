@@ -1,13 +1,11 @@
-<resources>>
+<resources>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="ScrumPoker" parent="ScrumPoker.Base">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.CardActivity" parent="AppTheme.NoActionBar">
-        <item name="android:windowEnterTransition">@transition/card_enter</item>
+    <style name="ScrumPoker.CardActivity">
+        <item name="android:windowSharedElementEnterTransition">@transition/card_enter</item>
     </style>
 </resources>
+

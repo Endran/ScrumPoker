@@ -15,10 +15,13 @@
   -->
 
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <changeBounds />
-    <changeTransform />
-    <changeClipBounds />
-    <changeImageTransform />
-    <arcMotion android:maximumAngle="50" />
+    <changeBounds/>
+    <changeTransform/>
+    <changeClipBounds/>
+    <changeImageTransform/>
+    <arcMotion
+        android:interpolator="@android:interpolator/decelerate_cubic"
+        android:maximumAngle="70"
+        android:minimumHorizontalAngle="10"
+        android:minimumVerticalAngle="10"/>
 </transitionSet>
