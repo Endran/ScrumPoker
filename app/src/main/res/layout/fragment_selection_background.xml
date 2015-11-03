@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             tools:context=".MainActivity"
+             android:id="@+id/frameLayoutQuickSettings"
+             tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/settings_background_padding_end"
+        android:paddingLeft="@dimen/settings_background_padding_start"
+        android:paddingRight="@dimen/settings_background_padding_end"
+        android:paddingStart="@dimen/settings_background_padding_start">
+
+        <TextView
+            fontPath="@string/font_serif_tall_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_title"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_title"
+            android:text="@string/quick_settings"
+            android:textColor="@color/text_color_settings_background"
+            android:textSize="@dimen/settings_background_text_size_title"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/show_after_tap"
+                android:textColor="@color/text_color_settings_background"
+                android:textSize="@dimen/settings_background_text_size_items"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:checked="true"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/show_quick_settings"
+                android:textColor="@color/text_color_settings_background"
+                android:textSize="@dimen/settings_background_text_size_items"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:checked="true"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/shake_to_reveal"
+                android:textColor="@color/text_color_settings_background"
+                android:textSize="@dimen/settings_background_text_size_items"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:checked="true"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/listen_for_nearby"
+                android:textColor="@color/text_color_settings_background"
+                android:textSize="@dimen/settings_background_text_size_items"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:checked="true"/>
+
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="216dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_title"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/listen_for_nearby"
+            android:src="@drawable/ic_nearby"/>
+
+        <TextView
+            fontPath="@string/font_sans_tall_x_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_item"
+            android:layout_gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/settings_background_text_size_help"
+            android:textAlignment="center"
+            android:text="@string/no_phones_found"/>
+
+    </LinearLayout>
+
+</FrameLayout>

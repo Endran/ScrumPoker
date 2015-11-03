@@ -21,6 +21,14 @@
     <string name="unknown">\?</string>
     <string name="coffee">Coffee</string>
 
+    <string name="quick_settings">Quick settings</string>
+    <string name="show_quick_settings">Show quick settings</string>
+    <string name="show_after_tap">Show card after tap</string>
+    <string name="shake_to_reveal">Shake to reveal</string>
+    <string name="listen_for_nearby">Listen for nearby phones</string>
+    <string name="no_phones_found">It seems nobody is there… Are you your palls are using the same app? And is nearby enabled for them as well?</string>
+    <string name="phones_found">Waiting for %1$s people to choose a card. %2$s have already made up their mind.</string>
+
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1276897370009998/5453903067</string>
     <string name="transition_card" translatable="false">transition_card</string>
 

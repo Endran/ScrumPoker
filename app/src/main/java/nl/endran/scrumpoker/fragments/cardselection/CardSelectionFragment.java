@@ -39,10 +39,10 @@ public class CardSelectionFragment extends Fragment {
 
         CardSelectionAdapter adapter = new CardSelectionAdapter(new CardSelectionAdapter.Listener() {
             @Override
-            public void onCardSelected(final View view, final CardValue cardValue, final int color, final int colorDark) {
+            public void onCardSelected(final View view, final CardSelection cardSelection) {
                 Analytics analytics = ((App) (getContext().getApplicationContext())).getAnalytics();
-                analytics.trackEvent("CardValue:" + getString(cardValue.getStringId()));
-                final CardDisplayFragment fragment = CardDisplayFragment.createFragment(cardValue, color, colorDark);
+                analytics.trackEvent("CardValue:" + getString(cardSelection.getCardValue().getStringId()));
+                final SelectionBackgroundFragment fragment = SelectionBackgroundFragment.createFragment(cardSelection);
 
                 SupportAnimator disappearAnimation = animationManager.getCircularDisappearAnimation(
                         recyclerView,
@@ -67,7 +67,7 @@ public class CardSelectionFragment extends Fragment {
         return rootView;
     }
 
-    private void showFragment(final CardDisplayFragment fragment) {
+    private void showFragment(final Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         String name = fragment.getClass().getName();

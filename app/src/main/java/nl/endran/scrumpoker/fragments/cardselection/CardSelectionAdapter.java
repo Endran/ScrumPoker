@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 public class CardSelectionAdapter extends RecyclerView.Adapter<CardSelectionViewHolder> {
 
     public interface Listener {
-        void onCardSelected(View view, CardValue cardValue, final int color, final int colorDark);
+        void onCardSelected(View view, final CardSelection cardSelection);
     }
 
     @NonNull
@@ -51,7 +51,7 @@ public class CardSelectionAdapter extends RecyclerView.Adapter<CardSelectionView
         holder.setListener(new CardSelectionViewHolder.Listener() {
             @Override
             public void onCardClicked() {
-                listener.onCardSelected(holder.itemView, cardValue, color, colorDark);
+                listener.onCardSelected(holder.itemView, new CardSelection(cardValue, color, colorDark));
             }
         });
     }

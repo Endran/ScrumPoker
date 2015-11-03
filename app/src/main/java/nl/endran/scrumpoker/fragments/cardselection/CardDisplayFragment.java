@@ -25,9 +25,16 @@ import nl.endran.scrumpoker.animation.DummySupportAnimatorListener;
 
 public class CardDisplayFragment extends Fragment {
 
-    public static final String CARD_VALUE_KEY = "CARD_VALUE_KEY";
-    public static final String COLOR_KEY = "COLOR_KEY";
-    public static final String COLOR_DARK_KEY = "COLOR_DARK_KEY";
+    public static final String CARD_SELECTION_KEY = "CARD_SELECTION_KEY";
+
+    public static CardDisplayFragment createFragment(final CardSelection cardSelection) {
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(CARD_SELECTION_KEY, cardSelection);
+
+        CardDisplayFragment fragment = new CardDisplayFragment();
+        fragment.setArguments(arguments);
+        return fragment;
+    }
 
     @Bind(R.id.cardView)
     CardView cardView;
@@ -41,35 +48,20 @@ public class CardDisplayFragment extends Fragment {
 
     private View rootView;
 
-    public static CardDisplayFragment createFragment(final CardValue cardValue, final int color, final int colorDark) {
-        Bundle arguments = new Bundle();
-        arguments.putSerializable(CARD_VALUE_KEY, cardValue);
-        arguments.putInt(COLOR_KEY, color);
-        arguments.putInt(COLOR_DARK_KEY, colorDark);
-
-        CardDisplayFragment fragment = new CardDisplayFragment();
-        fragment.setArguments(arguments);
-        return fragment;
-    }
-
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.large_scrum_card, container, false);
         ButterKnife.bind(this, rootView);
 
-        Bundle arguments = getArguments();
+        CardSelection cardSelection = getCardSelection(getArguments());
 
-        CardValue cardValue = getCardValue(arguments);
-        int color = getColor(arguments);
-        int colorDark = getColorDark(arguments);
+        textViewNumber.setText(cardSelection.getCardValue().getStringId());
 
-        textViewNumber.setText(cardValue.getStringId());
+        textViewName.setText(cardSelection.getCardValue().toString());
+        textViewName.setBackgroundColor(cardSelection.getColorDark());
 
-        textViewName.setText(cardValue.toString());
-        textViewName.setBackgroundColor(colorDark);
-
-        cardView.setCardBackgroundColor(color);
+        cardView.setCardBackgroundColor(cardSelection.getColor());
         cardView.setVisibility(View.INVISIBLE);
 
         installBackPressedListener(new OnBackPressedListener() {
@@ -129,16 +121,8 @@ public class CardDisplayFragment extends Fragment {
         cardView.setVisibility(View.INVISIBLE);
     }
 
-    private CardValue getCardValue(@NonNull final Bundle arguments) {
-        return (CardValue) arguments.getSerializable(CARD_VALUE_KEY);
-    }
-
-    private int getColor(@NonNull final Bundle arguments) {
-        return arguments.getInt(COLOR_KEY, 0);
-    }
-
-    private int getColorDark(@NonNull final Bundle arguments) {
-        return arguments.getInt(COLOR_DARK_KEY, 0);
+    private CardSelection getCardSelection(@NonNull final Bundle arguments) {
+        return (CardSelection) arguments.getSerializable(CARD_SELECTION_KEY);
     }
 
     private void installBackPressedListener(@NonNull final OnBackPressedListener onBackPressedListener) {
