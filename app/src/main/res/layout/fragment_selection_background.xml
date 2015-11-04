@@ -19,10 +19,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingEnd="@dimen/settings_background_padding_end"
-        android:paddingLeft="@dimen/settings_background_padding_start"
-        android:paddingRight="@dimen/settings_background_padding_end"
-        android:paddingStart="@dimen/settings_background_padding_start">
+        android:paddingEnd="@dimen/settings_background_padding_horizontal"
+        android:paddingLeft="@dimen/settings_background_padding_horizontal"
+        android:paddingRight="@dimen/settings_background_padding_horizontal"
+        android:paddingStart="@dimen/settings_background_padding_horizontal">
 
         <TextView
             fontPath="@string/font_serif_tall_x"
@@ -131,11 +131,9 @@
             android:layout_width="216dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_title"
             android:layout_marginTop="@dimen/settings_background_margin_vertical_title"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="@dimen/settings_background_margin_end_image"
-            android:layout_marginRight="@dimen/settings_background_margin_end_image"
             android:contentDescription="@string/listen_for_nearby"
             android:src="@drawable/ic_nearby"/>
 

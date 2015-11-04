@@ -12,7 +12,5 @@
     <dimen name="settings_background_text_size_help">12sp</dimen>
     <dimen name="settings_background_margin_vertical_title">28dp</dimen>
     <dimen name="settings_background_margin_vertical_item">4dp</dimen>
-    <dimen name="settings_background_padding_start">44dp</dimen>
-    <dimen name="settings_background_padding_end">64dp</dimen>
-    <dimen name="settings_background_margin_end_image">-20dp</dimen>
+    <dimen name="settings_background_padding_horizontal">44dp</dimen>
 </resources>
