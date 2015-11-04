@@ -5,7 +5,6 @@
 package nl.endran.scrumpoker;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.design.widget.NavigationView;
@@ -73,25 +72,25 @@ public class MainActivity extends BaseActivity
         selectionBackgroundFragment.hide();
         cardSelectionFragment.show(CardValue.values(), new CardSelectionFragment.Listener() {
             @Override
-            public void onCardSelected(final CardSelection cardSelection, final Point vanishingPoint) {
-                showSelectionBackgroundFragment(cardSelection,vanishingPoint);
+            public void onCardSelected(final CardSelection cardSelection) {
+                showSelectionBackgroundFragment(cardSelection);
             }
         });
     }
 
-    private void showSelectionBackgroundFragment(final CardSelection cardSelection, final Point vanishingPoint) {
+    private void showSelectionBackgroundFragment(final CardSelection cardSelection) {
         cardDisplayFragment.hide();
-        cardSelectionFragment.hide(vanishingPoint);
+        cardSelectionFragment.hide();
         selectionBackgroundFragment.show(new SelectionBackgroundFragment.Listener() {
             @Override
             public void onShowCardClicked() {
-                showCardDisplay(vanishingPoint, cardSelection);
+                showCardDisplay(cardSelection);
             }
         });
     }
 
-    private void showCardDisplay(final Point vanishingPoint, final CardSelection cardSelection) {
-        cardSelectionFragment.hide(vanishingPoint);
+    private void showCardDisplay(final CardSelection cardSelection) {
+        cardSelectionFragment.hide();
         selectionBackgroundFragment.hide();
         cardDisplayFragment.show(cardSelection);
     }

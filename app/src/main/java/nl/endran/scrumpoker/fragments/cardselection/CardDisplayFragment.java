@@ -31,6 +31,7 @@ public class CardDisplayFragment extends Fragment {
 
     @Bind(R.id.textViewName)
     TextView textViewName;
+
     private AnimationManager animationManager = new AnimationManager();
     private boolean showing;
 

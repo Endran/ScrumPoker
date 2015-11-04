@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,13 +20,12 @@ import io.codetail.animation.SupportAnimator;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.animation.AnimationManager;
-import nl.endran.scrumpoker.animation.SetVisibleOnAnimationStartListener;
 import nl.endran.scrumpoker.wrappers.Analytics;
 
 public class CardSelectionFragment extends Fragment {
 
     public interface Listener {
-        void onCardSelected(CardSelection cardSelection, final Point vanishingPoint);
+        void onCardSelected(CardSelection cardSelection);
     }
 
     @Bind(R.id.recyclerView)
@@ -38,6 +36,9 @@ public class CardSelectionFragment extends Fragment {
     private Listener listener;
 
     private boolean showing;
+
+    @Nullable
+    private Point vanishingPoint;
 
     @Nullable
     @Override
@@ -53,10 +54,10 @@ public class CardSelectionFragment extends Fragment {
 
                 int centerX = (int) (view.getX() + view.getMeasuredWidth() / 2);
                 int centerY = (int) (view.getY() + view.getMeasuredHeight() / 2);
-                Point vanishingPoint = new Point(centerX, centerY);
+                vanishingPoint = new Point(centerX, centerY);
 
                 if (listener != null) {
-                    listener.onCardSelected(cardSelection, vanishingPoint);
+                    listener.onCardSelected(cardSelection);
                 }
             }
         });
@@ -79,20 +80,39 @@ public class CardSelectionFragment extends Fragment {
             this.listener = listener;
             adapter.setCardValues(cardValues);
 
-            Animation animation = animationManager.createAnimation(getContext(), R.anim.fade_in);
-            animation.setAnimationListener(new SetVisibleOnAnimationStartListener(recyclerView));
-            recyclerView.startAnimation(animation);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            if (vanishingPoint != null) {
+                SupportAnimator animation = animationManager.getCircularRevealAnimation(
+                        recyclerView,
+                        vanishingPoint.x,
+                        vanishingPoint.y);
+                animation.start();
+                this.vanishingPoint = null;
+            }
         }
     }
 
-    public void hide(final Point vanishingPoint) {
+    public void hide() {
         if (showing) {
             showing = false;
-            SupportAnimator disappearAnimation = animationManager.getCircularDisappearAnimation(
+
+            Point vanishingPoint = getVanishingPoint();
+            SupportAnimator animation = animationManager.getCircularDisappearAnimation(
                     recyclerView,
                     vanishingPoint.x,
                     vanishingPoint.y);
-            disappearAnimation.start();
+            animation.start();
+        }
+    }
+
+    private Point getVanishingPoint() {
+        if (vanishingPoint != null) {
+            return vanishingPoint;
+        } else {
+            int centerX = (int) (recyclerView.getX() + recyclerView.getMeasuredWidth() / 2);
+            int centerY = (int) (recyclerView.getY() + recyclerView.getMeasuredHeight() / 2);
+            return new Point(centerX, centerY);
         }
     }
 
