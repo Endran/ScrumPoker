@@ -45,12 +45,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/show_after_tap"
+                android:text="@string/hide_after_selection"
                 android:textColor="@color/text_color_settings_background"
                 android:textSize="@dimen/settings_background_text_size_items"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
+                android:id="@+id/switchHideAfterSelection"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:checked="true"/>
@@ -74,6 +75,7 @@
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/switchShowQuickSettings"
                 android:layout_gravity="end"
                 android:checked="true"/>
 
@@ -96,6 +98,7 @@
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/switchShakeToReveal"
                 android:layout_gravity="end|center_vertical"
                 android:checked="true"/>
 
@@ -118,6 +121,7 @@
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/switchUseNearby"
                 android:layout_gravity="end"
                 android:checked="true"/>
 
@@ -125,11 +129,13 @@
 
         <ImageView
             android:layout_width="216dp"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
             android:layout_marginTop="@dimen/settings_background_margin_vertical_title"
             android:scaleType="centerCrop"
+            android:layout_marginEnd="@dimen/settings_background_margin_end_image"
+            android:layout_marginRight="@dimen/settings_background_margin_end_image"
             android:contentDescription="@string/listen_for_nearby"
             android:src="@drawable/ic_nearby"/>
 
