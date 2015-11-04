@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
+  -->
+
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:duration="@integer/duration_slide_in_bounce_grow"
+        android:fromYDelta="100%"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:toYDelta="-3%"/>
+    <translate
+        android:duration="@integer/duration_slide_in_bounce_shrink"
+        android:fromYDelta="0%"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:startOffset="@integer/duration_slide_in_bounce_grow"
+        android:toYDelta="3%"/>
+</set>
+

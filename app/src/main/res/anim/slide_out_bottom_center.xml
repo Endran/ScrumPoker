@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
+  -->
+
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+     android:interpolator="@android:anim/accelerate_interpolator">
+    <translate
+        android:duration="@integer/duration_slide_out"
+        android:fromYDelta="0%"
+        android:toYDelta="100%"/>
+</set>
+
