@@ -38,7 +38,7 @@ public class CardDisplayFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.large_scrum_card, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_card_display, container, false);
         ButterKnife.bind(this, rootView);
         cardView.setVisibility(View.INVISIBLE);
         return rootView;

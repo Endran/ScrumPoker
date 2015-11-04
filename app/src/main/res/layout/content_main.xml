@@ -23,21 +23,21 @@
     </com.google.android.gms.ads.AdView>
 
     <fragment
+        android:id="@+id/fragmentSelectionBackground"
         android:name="nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragmentSelectionBackground"/>
+        android:layout_height="match_parent"/>
 
     <fragment
+        android:id="@+id/fragmentCardSelection"
         android:name="nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragmentCardSelection"/>
+        android:layout_height="match_parent"/>
 
     <fragment
+        android:id="@+id/fragmentCardDisplay"
         android:name="nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragmentCardDisplay"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
