@@ -11,13 +11,15 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.codetail.animation.SupportAnimator;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.animation.AnimationManager;
+import nl.endran.scrumpoker.animation.SetInVisibleOnAnimationEndListener;
+import nl.endran.scrumpoker.animation.SetVisibleOnAnimationStartListener;
 
 public class CardDisplayFragment extends Fragment {
 
@@ -51,29 +53,22 @@ public class CardDisplayFragment extends Fragment {
         if (!showing) {
             showing = true;
             textViewNumber.setText(cardSelection.getCardValue().getStringId());
-
             textViewName.setText(cardSelection.getCardValue().toString());
             textViewName.setBackgroundColor(cardSelection.getColorDark());
-
             cardView.setCardBackgroundColor(cardSelection.getColor());
-            cardView.setVisibility(View.INVISIBLE);
 
-            SupportAnimator revealAnimation = animationManager.getCircularRevealAnimation(
-                    cardView,
-                    cardView.getX() + cardView.getMeasuredWidth() / 2,
-                    cardView.getY() + cardView.getMeasuredHeight() / 2);
-            revealAnimation.start();
+            Animation animation = animationManager.createAnimation(getContext(), R.anim.slide_in_bottom_center_with_bounce);
+            animation.setAnimationListener(new SetVisibleOnAnimationStartListener(cardView));
+            cardView.startAnimation(animation);
         }
     }
 
     public void hide() {
         if (showing) {
             showing = false;
-            SupportAnimator disappearAnimation = animationManager.getCircularDisappearAnimation(
-                    cardView,
-                    cardView.getX() + cardView.getMeasuredWidth() / 2,
-                    cardView.getY() + cardView.getMeasuredHeight() / 2);
-            disappearAnimation.start();
+            Animation animation = animationManager.createAnimation(getContext(), R.anim.slide_out_bottom_center);
+            animation.setAnimationListener(new SetInVisibleOnAnimationEndListener(cardView));
+            cardView.startAnimation(animation);
         }
     }
 }

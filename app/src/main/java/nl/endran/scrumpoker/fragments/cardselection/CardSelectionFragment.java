@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,6 +21,7 @@ import io.codetail.animation.SupportAnimator;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.animation.AnimationManager;
+import nl.endran.scrumpoker.animation.SetVisibleOnAnimationStartListener;
 import nl.endran.scrumpoker.wrappers.Analytics;
 
 public class CardSelectionFragment extends Fragment {
@@ -76,7 +78,10 @@ public class CardSelectionFragment extends Fragment {
             showing = true;
             this.listener = listener;
             adapter.setCardValues(cardValues);
-            recyclerView.setVisibility(View.VISIBLE);
+
+            Animation animation = animationManager.createAnimation(getContext(), R.anim.fade_in);
+            animation.setAnimationListener(new SetVisibleOnAnimationStartListener(recyclerView));
+            recyclerView.startAnimation(animation);
         }
     }
 

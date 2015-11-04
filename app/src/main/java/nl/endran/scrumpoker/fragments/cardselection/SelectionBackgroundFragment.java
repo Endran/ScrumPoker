@@ -26,9 +26,10 @@ public class SelectionBackgroundFragment extends Fragment {
 
     @Bind(R.id.fab)
     FloatingActionButton fab;
-    private Listener listener;
 
     @Nullable
+    private Listener listener;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_selection_background, container, false);
