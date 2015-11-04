@@ -22,11 +22,22 @@
         ads:adUnitId="@string/banner_ad_unit_id">
     </com.google.android.gms.ads.AdView>
 
-    <FrameLayout
-        android:id="@+id/contentFrame"
+    <fragment
+        android:name="nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/adView">
-    </FrameLayout>
+        android:id="@+id/fragmentSelectionBackground"/>
+
+    <fragment
+        android:name="nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragmentCardSelection"/>
+
+    <fragment
+        android:name="nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragmentCardDisplay"/>
 
 </RelativeLayout>

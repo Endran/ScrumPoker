@@ -4,11 +4,10 @@
 
 package nl.endran.scrumpoker.fragments.cardselection;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,15 +20,22 @@ import io.codetail.animation.SupportAnimator;
 import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.animation.AnimationManager;
-import nl.endran.scrumpoker.animation.DummySupportAnimatorListener;
 import nl.endran.scrumpoker.wrappers.Analytics;
 
 public class CardSelectionFragment extends Fragment {
+
+    public interface Listener {
+        void onCardSelected(CardSelection cardSelection, final Point vanishingPoint);
+    }
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
 
     private AnimationManager animationManager = new AnimationManager();
+    private CardSelectionAdapter adapter;
+    private Listener listener;
+
+    private boolean showing;
 
     @Nullable
     @Override
@@ -37,29 +43,21 @@ public class CardSelectionFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_card_selection, container, false);
         ButterKnife.bind(this, rootView);
 
-        CardSelectionAdapter adapter = new CardSelectionAdapter(new CardSelectionAdapter.Listener() {
+        adapter = new CardSelectionAdapter(new CardSelectionAdapter.Listener() {
             @Override
             public void onCardSelected(final View view, final CardSelection cardSelection) {
                 Analytics analytics = ((App) (getContext().getApplicationContext())).getAnalytics();
                 analytics.trackEvent("CardValue:" + getString(cardSelection.getCardValue().getStringId()));
-                final SelectionBackgroundFragment fragment = SelectionBackgroundFragment.createFragment(cardSelection);
 
-                SupportAnimator disappearAnimation = animationManager.getCircularDisappearAnimation(
-                        recyclerView,
-                        view.getX() + view.getMeasuredWidth() / 2,
-                        view.getY() + view.getMeasuredHeight() / 2);
+                int centerX = (int) (view.getX() + view.getMeasuredWidth() / 2);
+                int centerY = (int) (view.getY() + view.getMeasuredHeight() / 2);
+                Point vanishingPoint = new Point(centerX, centerY);
 
-                disappearAnimation.addListener(new DummySupportAnimatorListener() {
-                    @Override
-                    public void onAnimationEnd() {
-                        showFragment(fragment);
-                    }
-                });
-                disappearAnimation.start();
+                if (listener != null) {
+                    listener.onCardSelected(cardSelection, vanishingPoint);
+                }
             }
         });
-
-        adapter.setCardValues(CardValue.values());
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(adapter);
@@ -67,18 +65,33 @@ public class CardSelectionFragment extends Fragment {
         return rootView;
     }
 
-    private void showFragment(final Fragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        String name = fragment.getClass().getName();
-        transaction.addToBackStack(name);
-        transaction.replace(R.id.contentFrame, fragment, name);
-        transaction.commit();
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    public void show(CardValue[] cardValues, Listener listener) {
+        if (!showing) {
+            showing = true;
+            this.listener = listener;
+            adapter.setCardValues(cardValues);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hide(final Point vanishingPoint) {
+        if (showing) {
+            showing = false;
+            SupportAnimator disappearAnimation = animationManager.getCircularDisappearAnimation(
+                    recyclerView,
+                    vanishingPoint.x,
+                    vanishingPoint.y);
+            disappearAnimation.start();
+        }
+    }
+
+    public boolean isShowing() {
+        return showing;
     }
 }
