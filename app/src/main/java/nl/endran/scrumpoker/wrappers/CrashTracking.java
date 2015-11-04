@@ -10,12 +10,7 @@ import android.support.annotation.NonNull;
 import com.crashlytics.android.Crashlytics;
 
 import nl.endran.scrumpoker.BuildConfig;
-import nl.endran.scrumpoker.wrappers.FabricFactory;
 
-/**
- * (C) Koninklijke Philips N.V., 2015.
- * All rights reserved.
- */
 public class CrashTracking {
 
     @NonNull

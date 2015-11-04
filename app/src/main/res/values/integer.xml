@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
+  -->
+
+<resources>
+    <integer name="duration_fade">400</integer>
+    <integer name="duration_slide_in_bounce_grow">300</integer>
+    <integer name="duration_slide_in_bounce_shrink">100</integer>
+    <integer name="duration_slide_out">200</integer>
+</resources>

@@ -13,10 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import nl.endran.scrumpoker.wrappers.Analytics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-/**
- * (C) Koninklijke Philips N.V., 2015.
- * All rights reserved.
- */
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override

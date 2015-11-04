@@ -36,7 +36,7 @@ public class App extends Application {
 
     protected void initCalligraphy() {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        //.setDefaultFontPath(getString(R.string.font_sans_tall_x))
+                        .setDefaultFontPath(getString(R.string.font_sans_tall_x))
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

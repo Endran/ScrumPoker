@@ -9,10 +9,6 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 
-/**
- * (C) Koninklijke Philips N.V., 2015.
- * All rights reserved.
- */
 public class GoogleAnalyticsFactory {
 
     public GoogleAnalytics create(@NonNull final Context context) {

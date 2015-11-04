@@ -6,4 +6,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="settings_background_text_size_title">32sp</dimen>
+    <dimen name="settings_background_text_size_items">16sp</dimen>
+    <dimen name="settings_background_text_size_help">12sp</dimen>
+    <dimen name="settings_background_margin_vertical_title">28dp</dimen>
+    <dimen name="settings_background_margin_vertical_item">4dp</dimen>
+    <dimen name="settings_background_padding_horizontal">44dp</dimen>
 </resources>

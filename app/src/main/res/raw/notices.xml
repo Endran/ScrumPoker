@@ -19,6 +19,13 @@
     </notice>
 
     <notice>
+        <name>Eye Icon</name>
+        <url>http://www.freepik.com</url>
+        <copyright>Copyright Freepik.</copyright>
+        <license>Creative Commons Attribution-NoDerivs 3.0 Unported</license>
+    </notice>
+
+    <notice>
         <name>Licenses Dialog 1.8.0</name>
         <copyright>Copyright 2013 Philip Schiffer.</copyright>
         <license>Apache Software License 2.0</license>
