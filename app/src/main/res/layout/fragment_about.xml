@@ -7,9 +7,10 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="@dimen/activity_horizontal_margin"
-              android:orientation="vertical"
               android:background="@color/fragmentBackground"
+              android:clickable="true"
+              android:orientation="vertical"
+              android:padding="@dimen/activity_horizontal_margin"
               tools:ignore="MissingPrefix">
 
     <ImageView
@@ -30,9 +31,9 @@
         android:textSize="@dimen/about_title_text_size"/>
 
     <TextView
+        android:id="@+id/textViewVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewVersion"
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/about_text_top_margin"
         android:textSize="@dimen/about_content_text_size"
@@ -43,8 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/about_text_top_margin"
-        android:textSize="@dimen/about_content_text_size"
-        android:text="@string/created_by"/>
+        android:text="@string/created_by"
+        android:textSize="@dimen/about_content_text_size"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,14 +53,14 @@
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/about_text_top_margin"
         android:autoLink="web"
-        android:textSize="@dimen/about_content_text_size"
-        android:text="@string/website"/>
+        android:text="@string/website"
+        android:textSize="@dimen/about_content_text_size"/>
 
     <Button
         android:id="@+id/buttonLicenses"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/about_licenses_top_margin"
         android:text="@string/action_licenses"/>
 

@@ -147,6 +147,7 @@ public class MainActivity extends BaseActivity {
             FragmentTransaction transaction = supportFragmentManager.beginTransaction();
             AboutFragment fragment = new AboutFragment();
             transaction.addToBackStack(fragment.getClass().getName());
+            transaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
             transaction.replace(R.id.contentFrame, fragment);
             transaction.commit();
 //        } else if (id == R.id.nav_settings) {
