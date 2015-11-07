@@ -146,7 +146,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public boolean handleNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_standard) {
