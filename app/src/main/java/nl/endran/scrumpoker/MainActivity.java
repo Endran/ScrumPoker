@@ -5,6 +5,7 @@
 package nl.endran.scrumpoker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.design.widget.NavigationView;
@@ -147,7 +148,6 @@ public class MainActivity extends BaseActivity {
         licensesDialog.show();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     public boolean handleNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -159,14 +159,26 @@ public class MainActivity extends BaseActivity {
         } else if (id == R.id.nav_shirt) {
             setCardsAndShow(CardValue.getShirt());
         } else if (id == R.id.nav_share) {
+            shareApp();
+        } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_send) {
-
+//        } else if (id == R.id.nav_settings) {
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    private void shareApp() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.app_name));
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey check out this awesome Scrum Poker app at: https://play.google.com/store/apps/details?id=nl.endran.scrumpoker");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 }
