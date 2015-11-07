@@ -18,8 +18,8 @@ android {
         applicationId "nl.endran.scrumpoker"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 7
-        versionName "0.6 (${getDetails()})"
+        versionCode 8
+        versionName "0.7 (${getDetails()})"
     }
 
     signingConfigs {
