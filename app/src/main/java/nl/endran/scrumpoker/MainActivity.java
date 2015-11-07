@@ -9,14 +9,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import de.psdev.licensesdialog.LicensesDialog;
+import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelection;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
@@ -30,6 +31,7 @@ public class MainActivity extends BaseActivity {
     private CardSelectionFragment cardSelectionFragment;
     private SelectionBackgroundFragment selectionBackgroundFragment;
     private DrawerLayout drawer;
+    private FragmentManager supportFragmentManager;
 
     @Override
     @CallSuper
@@ -43,6 +45,8 @@ public class MainActivity extends BaseActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        supportFragmentManager = getSupportFragmentManager();
 
         selectionBackgroundFragment = (SelectionBackgroundFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSelectionBackground);
         cardSelectionFragment = (CardSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardSelection);
@@ -112,6 +116,8 @@ public class MainActivity extends BaseActivity {
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (supportFragmentManager.getBackStackEntryCount() > 0) {
+            supportFragmentManager.popBackStack();
         } else if (!cardSelectionFragment.isShowing()) {
             showCardSelection();
         } else {
@@ -123,29 +129,6 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         drawer.closeDrawer(GravityCompat.START);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_licenses) {
-            showLicensesDialog(this);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void showLicensesDialog(final Context context) {
-        LicensesDialog licensesDialog = new LicensesDialog.Builder(context).setNotices(R.raw.notices).build();
-        licensesDialog.show();
     }
 
     public boolean handleNavigationItemSelected(MenuItem item) {
@@ -161,7 +144,11 @@ public class MainActivity extends BaseActivity {
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_about) {
-
+            FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+            AboutFragment fragment = new AboutFragment();
+            transaction.addToBackStack(fragment.getClass().getName());
+            transaction.replace(R.id.contentFrame, fragment);
+            transaction.commit();
 //        } else if (id == R.id.nav_settings) {
         }
 

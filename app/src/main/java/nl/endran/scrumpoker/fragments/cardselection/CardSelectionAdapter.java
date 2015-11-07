@@ -44,7 +44,7 @@ public class CardSelectionAdapter extends RecyclerView.Adapter<CardSelectionView
 
         holder.cardView.setCardBackgroundColor(color);
 
-        holder.textViewName.setText(cardValue.toString());
+        holder.textViewName.setText(cardValue.toString().replace("_", " "));
         holder.textViewName.setBackgroundColor(colorDark);
 
         holder.textView.setText(cardValue.getStringId());

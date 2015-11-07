@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/activity_horizontal_margin"
+              android:orientation="vertical"
+              android:background="@color/fragmentBackground"
+              tools:ignore="MissingPrefix">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/about_image_top_margin"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_high_res"/>
+
+    <TextView
+        fontPath="@string/font_serif_tall_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/about_text_top_margin"
+        android:text="@string/app_name"
+        android:textSize="@dimen/about_title_text_size"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewVersion"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/about_text_top_margin"
+        android:textSize="@dimen/about_content_text_size"
+        tools:text="App Version"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/about_text_top_margin"
+        android:textSize="@dimen/about_content_text_size"
+        android:text="@string/created_by"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/about_text_top_margin"
+        android:autoLink="web"
+        android:textSize="@dimen/about_content_text_size"
+        android:text="@string/website"/>
+
+    <Button
+        android:id="@+id/buttonLicenses"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/about_licenses_top_margin"
+        android:text="@string/action_licenses"/>
+
+</LinearLayout>

@@ -4,7 +4,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_licenses">Licenses</string>
+    <string name="created_by">Created by David Hardy</string>
+    <string name="website">http://www.endran.nl</string>
+    <string name="action_licenses">Third party licenses</string>
+    <string name="version_info">Version %1$s</string>
 
     <string name="zero">0</string>
     <string name="half">&#189;</string>
