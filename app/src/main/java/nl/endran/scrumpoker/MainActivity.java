@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity {
 
     private void setCardsAndShow(final CardValue[] cardValues) {
         closeDrawer();
+        resetMenuScreens();
         cardSelectionFragment.setCardValues(cardValues);
         showCardSelection();
     }
@@ -118,11 +119,17 @@ public class MainActivity extends BaseActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             closeDrawer();
         } else if (supportFragmentManager.getBackStackEntryCount() > 0) {
-            supportFragmentManager.popBackStack();
+            resetMenuScreens();
         } else if (!cardSelectionFragment.isShowing()) {
             showCardSelection();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void resetMenuScreens() {
+        if (supportFragmentManager.getBackStackEntryCount() > 0) {
+            supportFragmentManager.popBackStack();
         }
     }
 
