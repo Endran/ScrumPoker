@@ -10,6 +10,7 @@ import android.support.annotation.CallSuper;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ public class MainActivity extends BaseActivity {
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
     private SelectionBackgroundFragment selectionBackgroundFragment;
+    private DrawerLayout drawer;
 
     @Override
     @CallSuper
@@ -53,19 +55,24 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        showCardSelection();
+        setCardsAndShow(CardValue.getStandard());
 
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void setCardsAndShow(final CardValue[] cardValues) {
+        cardSelectionFragment.setCardValues(cardValues);
+        showCardSelection();
     }
 
     private void showCardSelection() {
         cardDisplayFragment.hide();
         selectionBackgroundFragment.hide();
-        cardSelectionFragment.show(CardValue.values(), new CardSelectionFragment.Listener() {
+        cardSelectionFragment.show(new CardSelectionFragment.Listener() {
             @Override
             public void onCardSelected(final CardSelection cardSelection) {
                 showSelectionBackgroundFragment(cardSelection);
@@ -102,7 +109,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (!cardSelectionFragment.isShowing()) {
@@ -110,6 +116,12 @@ public class MainActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -140,14 +152,12 @@ public class MainActivity extends BaseActivity {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
+        if (id == R.id.nav_standard) {
+            setCardsAndShow(CardValue.getStandard());
+        } else if (id == R.id.nav_fibonacci) {
+            setCardsAndShow(CardValue.getFibonacci());
+        } else if (id == R.id.nav_shirt) {
+            setCardsAndShow(CardValue.getShirt());
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
