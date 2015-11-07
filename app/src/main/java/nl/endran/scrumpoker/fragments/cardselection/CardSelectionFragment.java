@@ -74,11 +74,10 @@ public class CardSelectionFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    public void show(CardValue[] cardValues, Listener listener) {
+    public void show(Listener listener) {
         if (!showing) {
             showing = true;
             this.listener = listener;
-            adapter.setCardValues(cardValues);
 
             recyclerView.setVisibility(View.VISIBLE);
 
@@ -91,6 +90,10 @@ public class CardSelectionFragment extends Fragment {
                 this.vanishingPoint = null;
             }
         }
+    }
+
+    public void setCardValues(final CardValue[] cardValues) {
+        adapter.setCardValues(cardValues);
     }
 
     public void hide() {

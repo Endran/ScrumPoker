@@ -5,16 +5,19 @@
 package nl.endran.scrumpoker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import de.psdev.licensesdialog.LicensesDialog;
+import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelection;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
@@ -27,6 +30,8 @@ public class MainActivity extends BaseActivity {
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
     private SelectionBackgroundFragment selectionBackgroundFragment;
+    private DrawerLayout drawer;
+    private FragmentManager supportFragmentManager;
 
     @Override
     @CallSuper
@@ -41,6 +46,8 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        supportFragmentManager = getSupportFragmentManager();
+
         selectionBackgroundFragment = (SelectionBackgroundFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSelectionBackground);
         cardSelectionFragment = (CardSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardSelection);
         cardDisplayFragment = (CardDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardDisplay);
@@ -53,19 +60,26 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        showCardSelection();
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
+        setCardsAndShow(CardValue.getStandard());
+    }
+
+    private void setCardsAndShow(final CardValue[] cardValues) {
+        closeDrawer();
+        resetMenuScreens();
+        cardSelectionFragment.setCardValues(cardValues);
+        showCardSelection();
     }
 
     private void showCardSelection() {
         cardDisplayFragment.hide();
         selectionBackgroundFragment.hide();
-        cardSelectionFragment.show(CardValue.values(), new CardSelectionFragment.Listener() {
+        cardSelectionFragment.show(new CardSelectionFragment.Listener() {
             @Override
             public void onCardSelected(final CardSelection cardSelection) {
                 showSelectionBackgroundFragment(cardSelection);
@@ -102,9 +116,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer();
+        } else if (supportFragmentManager.getBackStackEntryCount() > 0) {
+            resetMenuScreens();
         } else if (!cardSelectionFragment.isShowing()) {
             showCardSelection();
         } else {
@@ -112,51 +127,60 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_licenses) {
-            showLicensesDialog(this);
-            return true;
+    private void resetMenuScreens() {
+        if (supportFragmentManager.getBackStackEntryCount() > 0) {
+            supportFragmentManager.popBackStack();
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
-    public void showLicensesDialog(final Context context) {
-        LicensesDialog licensesDialog = new LicensesDialog.Builder(context).setNotices(R.raw.notices).build();
-        licensesDialog.show();
+    private void closeDrawer() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        closeDrawer();
+    }
+
     public boolean handleNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
+        if (id == R.id.nav_standard) {
+            setCardsAndShow(CardValue.getStandard());
+        } else if (id == R.id.nav_fibonacci) {
+            setCardsAndShow(CardValue.getFibonacci());
+        } else if (id == R.id.nav_shirt) {
+            setCardsAndShow(CardValue.getShirt());
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            shareApp();
+        } else if (id == R.id.nav_about) {
+            FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+            AboutFragment fragment = new AboutFragment();
+            transaction.addToBackStack(fragment.getClass().getName());
+            transaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
+            transaction.replace(R.id.contentFrame, fragment);
+            transaction.commit();
+//        } else if (id == R.id.nav_settings) {
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    private void shareApp() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.app_name));
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey check out this awesome Scrum Poker app at: https://play.google.com/store/apps/details?id=nl.endran.scrumpoker");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 }

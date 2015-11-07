@@ -13,4 +13,10 @@
     <dimen name="settings_background_margin_vertical_title">28dp</dimen>
     <dimen name="settings_background_margin_vertical_item">4dp</dimen>
     <dimen name="settings_background_padding_horizontal">44dp</dimen>
+
+    <dimen name="about_image_top_margin">24dp</dimen>
+    <dimen name="about_text_top_margin">8dp</dimen>
+    <dimen name="about_licenses_top_margin">36dp</dimen>
+    <dimen name="about_title_text_size">44sp</dimen>
+    <dimen name="about_content_text_size">16sp</dimen>
 </resources>
