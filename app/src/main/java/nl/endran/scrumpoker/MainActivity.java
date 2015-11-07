@@ -70,6 +70,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setCardsAndShow(final CardValue[] cardValues) {
+        closeDrawer();
+        resetMenuScreens();
         cardSelectionFragment.setCardValues(cardValues);
         showCardSelection();
     }
@@ -115,9 +117,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer();
         } else if (supportFragmentManager.getBackStackEntryCount() > 0) {
-            supportFragmentManager.popBackStack();
+            resetMenuScreens();
         } else if (!cardSelectionFragment.isShowing()) {
             showCardSelection();
         } else {
@@ -125,10 +127,22 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void resetMenuScreens() {
+        if (supportFragmentManager.getBackStackEntryCount() > 0) {
+            supportFragmentManager.popBackStack();
+        }
+    }
+
+    private void closeDrawer() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        drawer.closeDrawer(GravityCompat.START);
+        closeDrawer();
     }
 
     public boolean handleNavigationItemSelected(MenuItem item) {
