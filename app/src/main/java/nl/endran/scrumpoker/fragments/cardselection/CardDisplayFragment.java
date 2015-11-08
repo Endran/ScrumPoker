@@ -54,7 +54,7 @@ public class CardDisplayFragment extends Fragment {
         if (!showing) {
             showing = true;
             textViewNumber.setText(cardSelection.getCardValue().getStringId());
-            textViewName.setText(cardSelection.getCardValue().toString());
+            textViewName.setText(cardSelection.getCardValue().toString().replace("_", " "));
             textViewName.setBackgroundColor(cardSelection.getColorDark());
             cardView.setCardBackgroundColor(cardSelection.getColor());
 

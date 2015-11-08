@@ -112,12 +112,10 @@ public class SelectionBackgroundFragment extends Fragment {
 
     @OnCheckedChanged(R.id.switchShakeToReveal)
     public void onSwitchShakeToRevealChanged(final boolean checked) {
-        Toast.makeText(getContext(), R.string.quick_settings_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
     @OnCheckedChanged(R.id.switchUseNearby)
     public void onSwitchUseNearbySelectionChanged(final boolean checked) {
-        Toast.makeText(getContext(), R.string.quick_settings_not_implemented, Toast.LENGTH_SHORT).show();
     }
 
     public void setPreferences(final Preferences preferences) {
