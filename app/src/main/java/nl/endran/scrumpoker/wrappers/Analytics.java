@@ -36,7 +36,7 @@ public class Analytics {
 
     public void trackPage(@NonNull String pageName) {
         if (tracker != null) {
-            tracker.setScreenName("Image~" + pageName);
+            tracker.setScreenName(pageName);
             tracker.send(new HitBuilders.ScreenViewBuilder().build());
         }
     }

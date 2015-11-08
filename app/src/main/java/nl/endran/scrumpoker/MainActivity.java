@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -21,8 +22,9 @@ import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelection;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
-import nl.endran.scrumpoker.fragments.cardselection.CardValue;
+import nl.endran.scrumpoker.fragments.cardselection.DeckType;
 import nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment;
+import nl.endran.scrumpoker.fragments.cardselection.SettingsFragment;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends BaseActivity {
@@ -32,6 +34,7 @@ public class MainActivity extends BaseActivity {
     private SelectionBackgroundFragment selectionBackgroundFragment;
     private DrawerLayout drawer;
     private FragmentManager supportFragmentManager;
+    private Preferences preferences;
 
     @Override
     @CallSuper
@@ -45,6 +48,8 @@ public class MainActivity extends BaseActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        preferences = new Preferences(getApplicationContext());
 
         supportFragmentManager = getSupportFragmentManager();
 
@@ -66,13 +71,17 @@ public class MainActivity extends BaseActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        setCardsAndShow(CardValue.getStandard());
+        DeckType standard = preferences.getDeckType();
+        setCardsAndShow(standard);
+
+        selectionBackgroundFragment.setPreferences(preferences);
     }
 
-    private void setCardsAndShow(final CardValue[] cardValues) {
+    private void setCardsAndShow(final DeckType deckType) {
         closeDrawer();
         resetMenuScreens();
-        cardSelectionFragment.setCardValues(cardValues);
+        preferences.setDeckType(deckType);
+        cardSelectionFragment.setCardValues(deckType.getValues());
         showCardSelection();
     }
 
@@ -128,7 +137,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void resetMenuScreens() {
-        if (supportFragmentManager.getBackStackEntryCount() > 0) {
+        int backStackEntryCount = supportFragmentManager.getBackStackEntryCount();
+        for (int i = 0; i < backStackEntryCount; i++) {
             supportFragmentManager.popBackStack();
         }
     }
@@ -146,31 +156,35 @@ public class MainActivity extends BaseActivity {
     }
 
     public boolean handleNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_standard) {
-            setCardsAndShow(CardValue.getStandard());
+            setCardsAndShow(DeckType.STANDARD);
         } else if (id == R.id.nav_fibonacci) {
-            setCardsAndShow(CardValue.getFibonacci());
+            setCardsAndShow(DeckType.FIBONACCI);
         } else if (id == R.id.nav_shirt) {
-            setCardsAndShow(CardValue.getShirt());
+            setCardsAndShow(DeckType.SHIRT);
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_about) {
-            FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-            AboutFragment fragment = new AboutFragment();
-            transaction.addToBackStack(fragment.getClass().getName());
-            transaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
-            transaction.replace(R.id.contentFrame, fragment);
-            transaction.commit();
-//        } else if (id == R.id.nav_settings) {
+            showSettingsFragment(new AboutFragment());
+        } else if (id == R.id.nav_settings) {
+            showSettingsFragment(new SettingsFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    private void showSettingsFragment(final Fragment fragment) {
+        resetMenuScreens();
+        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+        transaction.addToBackStack(fragment.getClass().getName());
+        transaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
+        transaction.replace(R.id.contentFrame, fragment);
+        transaction.commit();
     }
 
     private void shareApp() {

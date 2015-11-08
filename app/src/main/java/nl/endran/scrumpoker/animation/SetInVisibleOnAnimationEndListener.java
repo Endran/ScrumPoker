@@ -8,10 +8,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.Animation;
 
-/**
- * (C) Koninklijke Philips N.V., 2015.
- * All rights reserved.
- */
 public class SetInVisibleOnAnimationEndListener extends DummyAnimationListener {
 
     private View view;

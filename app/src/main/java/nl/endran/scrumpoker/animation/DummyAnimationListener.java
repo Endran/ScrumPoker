@@ -6,10 +6,6 @@ package nl.endran.scrumpoker.animation;
 
 import android.view.animation.Animation;
 
-/**
- * (C) Koninklijke Philips N.V., 2015.
- * All rights reserved.
- */
 public class DummyAnimationListener implements Animation.AnimationListener {
 
     @Override
