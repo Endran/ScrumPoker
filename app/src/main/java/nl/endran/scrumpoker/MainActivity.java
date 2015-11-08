@@ -21,7 +21,7 @@ import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelection;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
-import nl.endran.scrumpoker.fragments.cardselection.CardValue;
+import nl.endran.scrumpoker.fragments.cardselection.DeckType;
 import nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity {
     private SelectionBackgroundFragment selectionBackgroundFragment;
     private DrawerLayout drawer;
     private FragmentManager supportFragmentManager;
+    private Preferences preferences;
 
     @Override
     @CallSuper
@@ -66,13 +67,16 @@ public class MainActivity extends BaseActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        setCardsAndShow(CardValue.getStandard());
+        preferences = new Preferences(getApplicationContext());
+        DeckType standard = preferences.getDeckType();
+        setCardsAndShow(standard);
     }
 
-    private void setCardsAndShow(final CardValue[] cardValues) {
+    private void setCardsAndShow(final DeckType deckType) {
         closeDrawer();
         resetMenuScreens();
-        cardSelectionFragment.setCardValues(cardValues);
+        preferences.setDeckType(deckType);
+        cardSelectionFragment.setCardValues(deckType.getValues());
         showCardSelection();
     }
 
@@ -149,11 +153,11 @@ public class MainActivity extends BaseActivity {
         int id = item.getItemId();
 
         if (id == R.id.nav_standard) {
-            setCardsAndShow(CardValue.getStandard());
+            setCardsAndShow(DeckType.STANDARD);
         } else if (id == R.id.nav_fibonacci) {
-            setCardsAndShow(CardValue.getFibonacci());
+            setCardsAndShow(DeckType.FIBONACCI);
         } else if (id == R.id.nav_shirt) {
-            setCardsAndShow(CardValue.getShirt());
+            setCardsAndShow(DeckType.SHIRT);
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_about) {

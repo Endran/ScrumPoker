@@ -44,19 +44,4 @@ public enum CardValue {
     public int getStringId() {
         return stringId;
     }
-
-    public static CardValue[] getStandard() {
-        return new CardValue[]{
-                ZERO, HALF, ONE, TWO, THREE, FIVE, EIGHT, THIRTEEN, TWENTY, FORTY, HUNDRED, INFINITE, UNKNOWN, COFFEE};
-    }
-
-    public static CardValue[] getFibonacci() {
-        return new CardValue[]{
-                ZERO, ONE, TWO, THREE, FIVE, EIGHT, THIRTEEN, TWENTY_ONE, THIRTY_FOUR, FIFTY_FIVE, EIGHTY_NINE, INFINITE, UNKNOWN, COFFEE};
-    }
-
-    public static CardValue[] getShirt() {
-        return new CardValue[]{
-                XXS, XS, S, M, L, XL, XXL, INFINITE, UNKNOWN, COFFEE};
-    }
 }
