@@ -3,16 +3,17 @@
   ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
   -->
 
-<FrameLayout android:id="@+id/frameLayoutQuickSettings"
-             xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@color/fragmentBackground"
-             android:clickable="true"
-             android:orientation="vertical"
-             tools:context=".MainActivity"
-             tools:ignore="MissingPrefix">
+<FrameLayout
+    android:id="@+id/frameLayoutQuickSettings"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragmentBackground"
+    android:clickable="true"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:id="@+id/linearLayoutQuickSettings"
@@ -36,109 +37,7 @@
             android:textColor="@color/text_color_settings_background"
             android:textSize="@dimen/settings_background_text_size_title"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
-            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/hide_after_selection"
-                android:textColor="@color/text_color_settings_background"
-                android:textSize="@dimen/settings_background_text_size_items"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/switchHideAfterSelection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:checked="true"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
-            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/show_quick_settings"
-                android:textColor="@color/text_color_settings_background"
-                android:textSize="@dimen/settings_background_text_size_items"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/switchShowQuickSettings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:checked="true"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
-            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/shake_to_reveal"
-                android:textColor="@color/text_color_settings_background"
-                android:textSize="@dimen/settings_background_text_size_items"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/switchShakeToReveal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:checked="false"
-                android:enabled="false"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
-            android:layout_marginTop="@dimen/settings_background_margin_vertical_item">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/listen_for_nearby"
-                android:textColor="@color/text_color_settings_background"
-                android:textSize="@dimen/settings_background_text_size_items"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/switchUseNearby"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:checked="false"
-                android:enabled="false"/>
-
-        </FrameLayout>
-
-        <ImageView
-            android:layout_width="216dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/settings_background_margin_vertical_title"
-            android:layout_marginTop="@dimen/settings_background_margin_vertical_title"
-            android:contentDescription="@string/listen_for_nearby"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_nearby"/>
+        <include layout="@layout/merge_settings"/>
 
         <TextView
             fontPath="@string/font_sans_tall_x_medium"
