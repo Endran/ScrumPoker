@@ -19,4 +19,7 @@
     <dimen name="about_licenses_top_margin">36dp</dimen>
     <dimen name="about_title_text_size">44sp</dimen>
     <dimen name="about_content_text_size">16sp</dimen>
+
+    <dimen name="display_large_text_size">96sp</dimen>
+    <dimen name="display_small_text_size">24sp</dimen>
 </resources>
