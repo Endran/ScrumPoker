@@ -52,6 +52,12 @@ public class SelectionBackgroundFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     @OnClick(R.id.fab)
     public void onFabClick() {
         informListener();
@@ -88,7 +94,7 @@ public class SelectionBackgroundFragment extends Fragment {
         preferences.setHideAfterSelection(checked);
 
         if(!checked) {
-            switchShowQuickSettings.setChecked(checked);
+            switchShowQuickSettings.setChecked(false);
         }
     }
 
@@ -98,6 +104,9 @@ public class SelectionBackgroundFragment extends Fragment {
         preferences.setShowQuickSettings(checked);
         if(!checked && oldChecked) {
             Toast.makeText(getContext(), R.string.quick_settings_hidden, Toast.LENGTH_SHORT).show();
+        }
+        if (checked) {
+            switchHideAfterSelection.setChecked(true);
         }
     }
 

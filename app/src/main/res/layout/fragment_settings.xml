@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
+  -->
+
+<FrameLayout
+    android:id="@+id/frameLayoutSettings"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragmentBackground"
+    android:clickable="true"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/settings_background_padding_horizontal"
+        android:paddingLeft="@dimen/settings_background_padding_horizontal"
+        android:paddingRight="@dimen/settings_background_padding_horizontal"
+        android:paddingStart="@dimen/settings_background_padding_horizontal">
+
+        <TextView
+            fontPath="@string/font_serif_tall_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/settings_background_margin_vertical_title"
+            android:layout_marginTop="@dimen/settings_background_margin_vertical_title"
+            android:text="@string/settings"
+            android:textColor="@color/text_color_settings_background"
+            android:textSize="@dimen/settings_background_text_size_title"/>
+
+        <include layout="@layout/merge_settings"/>
+
+    </LinearLayout>
+
+</FrameLayout>
