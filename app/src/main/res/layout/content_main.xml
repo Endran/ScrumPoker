@@ -26,23 +26,27 @@
         android:id="@+id/fragmentSelectionBackground"
         android:name="nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView"/>
 
     <fragment
         android:id="@+id/fragmentCardSelection"
         android:name="nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView"/>
 
     <fragment
         android:id="@+id/fragmentCardDisplay"
         android:name="nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView"/>
 
     <FrameLayout
         android:id="@+id/contentFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView"/>
 
 </RelativeLayout>

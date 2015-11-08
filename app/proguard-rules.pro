@@ -78,3 +78,8 @@
 -keep class android.support.v7.widget.LinearLayoutManager { *; }
 -keep class android.support.v7.widget.GridLayoutManager { *; }
 -keep class android.support.v7.widget.RecyclerView { *; }
+
+# ------- Custom files
+
+
+-keep class nl.endran.scrumpoker.util.AdLevel { *; }

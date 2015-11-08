@@ -4,7 +4,10 @@
 
 package nl.endran.scrumpoker.fragments.cardselection;
 
+import android.content.Context;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +24,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import nl.endran.scrumpoker.Preferences;
 import nl.endran.scrumpoker.R;
+import nl.endran.scrumpoker.util.ShakeManager;
 
 public class SelectionBackgroundFragment extends Fragment {
 
@@ -40,15 +44,23 @@ public class SelectionBackgroundFragment extends Fragment {
     @Bind(R.id.switchShowQuickSettings)
     SwitchCompat switchShowQuickSettings;
 
+    @Bind(R.id.switchShakeToReveal)
+    SwitchCompat switchShakeToReveal;
+
     @Nullable
     private Listener listener;
     private Preferences preferences;
+    private ShakeManager shakeManager;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_selection_background, container, false);
         ButterKnife.bind(this, rootView);
+
         fab.setVisibility(View.INVISIBLE);
+
+        shakeManager = new ShakeManager((SensorManager) rootView.getContext().getSystemService(Context.SENSOR_SERVICE));
+
         return rootView;
     }
 
@@ -74,17 +86,38 @@ public class SelectionBackgroundFragment extends Fragment {
         fab.show();
 
         boolean shouldHideAfterSelection = preferences.shouldHideAfterSelection();
+        boolean shouldShowQuickSettings = preferences.shouldShowQuickSettings();
+        boolean shouldRevealAfterShake = preferences.shouldRevealAfterShake();
+
         switchHideAfterSelection.setChecked(shouldHideAfterSelection);
+        switchShowQuickSettings.setChecked(shouldShowQuickSettings && shouldHideAfterSelection);
+        switchShakeToReveal.setChecked(shouldRevealAfterShake);
+
+        viewQuickSettings.setVisibility(shouldShowQuickSettings ? View.VISIBLE : View.INVISIBLE);
+
         if (!shouldHideAfterSelection) {
             informListener();
+        } else {
+            if (shouldRevealAfterShake) {
+                installShakeListener();
+            }
         }
+    }
 
-        boolean shouldShowQuickSettings = preferences.shouldShowQuickSettings();
-        viewQuickSettings.setVisibility(shouldShowQuickSettings ? View.VISIBLE : View.INVISIBLE);
-        switchShowQuickSettings.setChecked(shouldHideAfterSelection && shouldShowQuickSettings);
+    private void installShakeListener() {
+        shakeManager.start(new ShakeManager.Listener() {
+            @Override
+            public void onShake() {
+                Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(500);
+                informListener();
+            }
+        });
     }
 
     public void hide() {
+        shakeManager.stop();
+
         listener = null;
         fab.hide();
     }
@@ -93,8 +126,9 @@ public class SelectionBackgroundFragment extends Fragment {
     public void onSwitchHideAfterSelectionChanged(final boolean checked) {
         preferences.setHideAfterSelection(checked);
 
-        if(!checked) {
+        if (!checked) {
             switchShowQuickSettings.setChecked(false);
+            switchShakeToReveal.setChecked(false);
         }
     }
 
@@ -102,7 +136,7 @@ public class SelectionBackgroundFragment extends Fragment {
     public void onSwitchShowQuickSettingsChanged(final boolean checked) {
         boolean oldChecked = preferences.shouldShowQuickSettings();
         preferences.setShowQuickSettings(checked);
-        if(!checked && oldChecked) {
+        if (!checked && oldChecked) {
             Toast.makeText(getContext(), R.string.quick_settings_hidden, Toast.LENGTH_SHORT).show();
         }
         if (checked) {
@@ -112,6 +146,11 @@ public class SelectionBackgroundFragment extends Fragment {
 
     @OnCheckedChanged(R.id.switchShakeToReveal)
     public void onSwitchShakeToRevealChanged(final boolean checked) {
+        preferences.setRevealAfterShake(checked);
+        if (checked) {
+            switchHideAfterSelection.setChecked(true);
+            installShakeListener();
+        }
     }
 
     @OnCheckedChanged(R.id.switchUseNearby)

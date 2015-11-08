@@ -48,6 +48,8 @@
 
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1276897370009998/5453903067</string>
     <string name="transition_card" translatable="false">transition_card</string>
+    <string name="ad_url" translatable="false">http://endran.nl/scrumpoker/ads.php</string>
+
     <string name="standard">Standard</string>
     <string name="fibonacci">Fibonacci</string>
     <string name="t_shirt">T-Shirt</string>

@@ -6,10 +6,16 @@ package nl.endran.scrumpoker;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import nl.endran.scrumpoker.util.AdManager;
 import nl.endran.scrumpoker.wrappers.Analytics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -29,9 +35,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         Analytics analytics = ((App) (getApplication())).getAnalytics();
         analytics.trackPage(getPageName());
 
-//        AdView adView = (AdView) findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        adView.loadAd(adRequest);
+        final AdView adView = (AdView) findViewById(R.id.adView);
+        AdManager adManager = new AdManager();
+        adManager.checkForAds(new Handler(), getString(R.string.ad_url), new AdManager.Listener() {
+            @Override
+            public void onShouldShowAds(final boolean shouldShowAds) {
+                if (shouldShowAds) {
+                    AdRequest adRequest = new AdRequest.Builder().build();
+                    adView.loadAd(adRequest);
+                    adView.setVisibility(View.VISIBLE);
+                } else {
+                    adView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @LayoutRes

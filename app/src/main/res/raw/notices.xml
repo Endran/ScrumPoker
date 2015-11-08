@@ -26,6 +26,12 @@
     </notice>
 
     <notice>
+        <name>Gson 2.4</name>
+        <copyright>Copyright 2008 Google Inc. </copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
         <name>Licenses Dialog 1.8.0</name>
         <copyright>Copyright 2013 Philip Schiffer.</copyright>
         <license>Apache Software License 2.0</license>
