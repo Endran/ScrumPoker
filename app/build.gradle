@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
-//apply plugin: 'com.android.databinding'
-
 
 Properties props = new Properties()
 try {
@@ -18,8 +16,8 @@ android {
         applicationId "nl.endran.scrumpoker"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 8
-        versionName "0.7 (${getDetails()})"
+        versionCode 9
+        versionName "1.0 (${getDetails()})"
     }
 
     signingConfigs {
@@ -91,7 +89,6 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
-
 
 def getDetails() {
     def details = """git rev-parse --short HEAD""".execute().text.trim()
