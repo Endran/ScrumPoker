@@ -3,18 +3,19 @@
   ~ Copyright (c) 2015 by David Hardy. Licensed under the Apache License, Version 2.0.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout android:id="@+id/frameLayoutQuickSettings"
+             xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:background="@color/fragmentBackground"
+             android:clickable="true"
              android:orientation="vertical"
              tools:context=".MainActivity"
-             android:clickable="true"
-             android:background="@color/fragmentBackground"
-             android:id="@+id/frameLayoutQuickSettings"
              tools:ignore="MissingPrefix">
 
     <LinearLayout
+        android:id="@+id/linearLayoutQuickSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -50,8 +51,8 @@
                 android:textSize="@dimen/settings_background_text_size_items"/>
 
             <android.support.v7.widget.SwitchCompat
-                android:layout_width="wrap_content"
                 android:id="@+id/switchHideAfterSelection"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:checked="true"/>
@@ -73,9 +74,9 @@
                 android:textSize="@dimen/settings_background_text_size_items"/>
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchShowQuickSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/switchShowQuickSettings"
                 android:layout_gravity="end"
                 android:checked="true"/>
 
@@ -96,11 +97,12 @@
                 android:textSize="@dimen/settings_background_text_size_items"/>
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchShakeToReveal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/switchShakeToReveal"
                 android:layout_gravity="end|center_vertical"
-                android:checked="true"/>
+                android:checked="false"
+                android:enabled="false"/>
 
         </FrameLayout>
 
@@ -119,11 +121,12 @@
                 android:textSize="@dimen/settings_background_text_size_items"/>
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchUseNearby"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/switchUseNearby"
                 android:layout_gravity="end"
-                android:checked="true"/>
+                android:checked="false"
+                android:enabled="false"/>
 
         </FrameLayout>
 
@@ -133,21 +136,21 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/settings_background_margin_vertical_title"
             android:layout_marginTop="@dimen/settings_background_margin_vertical_title"
-            android:scaleType="centerCrop"
             android:contentDescription="@string/listen_for_nearby"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_nearby"/>
 
         <TextView
             fontPath="@string/font_sans_tall_x_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginBottom="@dimen/settings_background_margin_vertical_item"
             android:layout_marginTop="@dimen/settings_background_margin_vertical_item"
-            android:layout_gravity="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/settings_background_text_size_help"
+            android:text="@string/no_phones_found"
             android:textAlignment="center"
-            android:text="@string/no_phones_found"/>
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/settings_background_text_size_help"/>
 
     </LinearLayout>
 

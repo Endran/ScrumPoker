@@ -47,6 +47,8 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        preferences = new Preferences(getApplicationContext());
+
         supportFragmentManager = getSupportFragmentManager();
 
         selectionBackgroundFragment = (SelectionBackgroundFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSelectionBackground);
@@ -67,9 +69,10 @@ public class MainActivity extends BaseActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        preferences = new Preferences(getApplicationContext());
         DeckType standard = preferences.getDeckType();
         setCardsAndShow(standard);
+
+        selectionBackgroundFragment.setPreferences(preferences);
     }
 
     private void setCardsAndShow(final DeckType deckType) {

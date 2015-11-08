@@ -37,6 +37,7 @@
     <string name="unknown">\?</string>
     <string name="coffee">Coffee</string>
 
+    <string name="quick_settings_hidden">You can always enable quick settings again in the settings menu</string>
     <string name="quick_settings_not_implemented">Sadly the quick settings are not yet implemented.. Stay tuned for updates!</string>
     <string name="quick_settings">Quick settings</string>
     <string name="hide_after_selection">Hide card after selection</string>
