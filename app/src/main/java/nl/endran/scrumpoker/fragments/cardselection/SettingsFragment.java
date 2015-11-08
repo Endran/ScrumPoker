@@ -25,6 +25,9 @@ public class SettingsFragment extends Fragment {
     @Bind(R.id.switchShowQuickSettings)
     SwitchCompat switchShowQuickSettings;
 
+    @Bind(R.id.switchShakeToReveal)
+    SwitchCompat switchShakeToReveal;
+
     private Preferences preferences;
 
     @Override
@@ -36,6 +39,7 @@ public class SettingsFragment extends Fragment {
 
         switchHideAfterSelection.setChecked(preferences.shouldHideAfterSelection());
         switchShowQuickSettings.setChecked(preferences.shouldShowQuickSettings());
+        switchShakeToReveal.setChecked(preferences.shouldRevealAfterShake());
 
         return rootView;
     }
@@ -45,6 +49,7 @@ public class SettingsFragment extends Fragment {
         preferences.setHideAfterSelection(checked);
         if (!checked) {
             switchShowQuickSettings.setChecked(false);
+            switchShakeToReveal.setChecked(false);
         }
     }
 
@@ -58,6 +63,10 @@ public class SettingsFragment extends Fragment {
 
     @OnCheckedChanged(R.id.switchShakeToReveal)
     public void onSwitchShakeToRevealChanged(final boolean checked) {
+        preferences.setRevealAfterShake(checked);
+        if (checked) {
+            switchHideAfterSelection.setChecked(true);
+        }
     }
 
     @OnCheckedChanged(R.id.switchUseNearby)

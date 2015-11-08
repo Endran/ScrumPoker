@@ -13,7 +13,8 @@ public class Preferences {
 
     public static final String DECK_TYPE_KEY = "DECK_TYPE_KEY";
     public static final String HIDE_AFTER_SELECTION_KEY = "HIDE_AFTER_SELECTION_KEY";
-    public static final String SHOW_QUICK_SETTINGS = "SHOW_QUICK_SETTINGS";
+    public static final String SHOW_QUICK_SETTINGS_KEY = "SHOW_QUICK_SETTINGS_KEY";
+    public static final String SHAKE_TO_REVEAL_KEY= "SHAKE_TO_REVEAL_KEY";
 
     private final SharedPreferences sharedPreferences;
 
@@ -39,10 +40,18 @@ public class Preferences {
     }
 
     public void setShowQuickSettings(final boolean shouldShowQuickSettings) {
-        sharedPreferences.edit().putBoolean(SHOW_QUICK_SETTINGS, shouldShowQuickSettings).apply();
+        sharedPreferences.edit().putBoolean(SHOW_QUICK_SETTINGS_KEY, shouldShowQuickSettings).apply();
     }
 
     public boolean shouldShowQuickSettings() {
-        return sharedPreferences.getBoolean(SHOW_QUICK_SETTINGS, true);
+        return sharedPreferences.getBoolean(SHOW_QUICK_SETTINGS_KEY, true);
+    }
+
+    public void setRevealAfterShake(final boolean shouldRevealAfterShake) {
+        sharedPreferences.edit().putBoolean(SHAKE_TO_REVEAL_KEY, shouldRevealAfterShake).apply();
+    }
+
+    public boolean shouldRevealAfterShake() {
+        return sharedPreferences.getBoolean(SHAKE_TO_REVEAL_KEY, true);
     }
 }
