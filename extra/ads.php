@@ -15,23 +15,7 @@
 		
 	$rows = getAddLevel();
 
-	if($userId != '') {
-		echo json_encode($rows);
-	}
-	else {
-		echo '<table width="1500">';
-		echo '<tr>';
-		echo '<td><b>AdLevel</b></td>';
-		echo '</tr>';
-	
-		foreach ($rows as $row) {
-			echo '<tr>';
-			echo '<td>' . $row['adLevel'] . '</td>';
-			echo '</tr>';
-		}
-		
-		echo '</table>';
-	}
+	echo json_encode($rows);
 	
 	$row = null;
 	$stmt = null;
