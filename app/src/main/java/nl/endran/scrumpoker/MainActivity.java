@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,7 @@ import nl.endran.scrumpoker.fragments.cardselection.DeckType;
 import nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment;
 import nl.endran.scrumpoker.fragments.cardselection.SettingsFragment;
 import nl.endran.scrumpoker.nearby.NearbyHelper;
+import nl.endran.scrumpoker.nearby.PermissionCheckCallback;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends BaseActivity {
@@ -117,7 +119,22 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            public void onNearbyPermissionRequested(final Status status) {
+            public void onNearbyPermissionRequested() {
+                requestedNearbyPermission();
+            }
+        });
+    }
+
+    private void requestedNearbyPermission() {
+        nearbyHelper.requestPermission(new PermissionCheckCallback.Listener() {
+            @Override
+            public void onPermissionAllowed() {
+                preferences.setNearbyAllowed(true);
+            }
+
+            @Override
+            public void onPermissionNotAllowed(@Nullable final Status status) {
+                preferences.setNearbyAllowed(false);
                 if (status != null && status.hasResolution()) {
                     try {
                         status.startResolutionForResult(MainActivity.this,
@@ -236,20 +253,18 @@ public class MainActivity extends BaseActivity {
         nearbyHelper.stop();
     }
 
-//    // This is called in response to a button tap in the Nearby permission dialog. TODO
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_RESOLVE_ERROR) {
-//            mResolvingError = false;
-//            if (resultCode == RESULT_OK) {
-//                // Permission granted or error resolved successfully then we proceed
-//                // with publish and subscribe..
-//                publishAndSubscribe();
-//            } else {
-//                // This may mean that user had rejected to grant nearby permission.
-//                Log.i(TAG, "Failed to resolve error with code " + resultCode);
-//            }
-//        }
-//    }
+    // This is called in response to a button tap in the Nearby permission dialog. TODO
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_RESOLVE_ERROR) {
+            if (resultCode == RESULT_OK) {
+                preferences.setNearbyAllowed(true);
+            } else {
+                preferences.setNearbyAllowed(false);
+                Toast.makeText(this, R.string.please_allow_nearby, Toast.LENGTH_SHORT).show();
+            }
+            showCardSelection();
+        }
+    }
 }

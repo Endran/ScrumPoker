@@ -56,5 +56,6 @@
     <string name="about">About</string>
 
     <string name="error_google_api">There seems to be an error using this function right now… </string>
+    <string name="please_allow_nearby">If you wish to make use of auto reveal when others are Nearby, please allow the permissions.</string>
 
 </resources>

@@ -18,16 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.Preferences;
 import nl.endran.scrumpoker.R;
-import nl.endran.scrumpoker.nearby.PermissionCheckCallback;
+import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.util.ShakeManager;
 
 public class SelectionBackgroundFragment extends Fragment {
@@ -35,7 +32,7 @@ public class SelectionBackgroundFragment extends Fragment {
     public interface Listener {
         void onShowCardClicked();
 
-        void onNearbyPermissionRequested(@Nullable final Status status);
+        void onNearbyPermissionRequested();
     }
 
     @Bind(R.id.linearLayoutQuickSettings)
@@ -109,10 +106,8 @@ public class SelectionBackgroundFragment extends Fragment {
 
         if (!shouldHideAfterSelection) {
             informListener();
-        } else {
-            if (shouldRevealAfterShake) {
-                installShakeListener();
-            }
+        } else if (shouldRevealAfterShake) {
+            installShakeListener();
         }
     }
 
@@ -141,6 +136,7 @@ public class SelectionBackgroundFragment extends Fragment {
         if (!checked) {
             switchShowQuickSettings.setChecked(false);
             switchShakeToReveal.setChecked(false);
+            switchUseNearby.setChecked(false);
         }
     }
 
@@ -167,25 +163,14 @@ public class SelectionBackgroundFragment extends Fragment {
 
     @OnCheckedChanged(R.id.switchUseNearby)
     public void onSwitchUseNearbySelectionChanged(final boolean checked) {
-        if (checked) {
-            nearbyHelper.verifyPermission(new PermissionCheckCallback.Listener() {
-                @Override
-                public void onPermissionAllowed() {
-                    preferences.setUseNearby(true);
-                    switchHideAfterSelection.setChecked(true);
-                }
-
-                @Override
-                public void onPermissionNotAllowed(final Status status) {
-                    preferences.setUseNearby(false);
-                    switchUseNearby.setChecked(false);
-                    if (listener != null) {
-                        listener.onNearbyPermissionRequested(status);
-                    }
-                }
-            });
-        } else {
+        if (!checked) {
             preferences.setUseNearby(false);
+        } else if (preferences.isNearbyAllowed()) {
+            preferences.setUseNearby(true);
+            switchHideAfterSelection.setChecked(true);
+        } else if (listener != null) {
+            switchHideAfterSelection.setChecked(true);
+            listener.onNearbyPermissionRequested();
         }
     }
 
