@@ -15,6 +15,8 @@ public class Preferences {
     public static final String HIDE_AFTER_SELECTION_KEY = "HIDE_AFTER_SELECTION_KEY";
     public static final String SHOW_QUICK_SETTINGS_KEY = "SHOW_QUICK_SETTINGS_KEY";
     public static final String SHAKE_TO_REVEAL_KEY= "SHAKE_TO_REVEAL_KEY";
+    public static final String NEARBY_ALLOWED_KEY= "NEARBY_ALLOWED_KEY";
+    public static final String USE_NEARBY_KEY= "USE_NEARBY_KEY";
 
     private final SharedPreferences sharedPreferences;
 
@@ -53,5 +55,21 @@ public class Preferences {
 
     public boolean shouldRevealAfterShake() {
         return sharedPreferences.getBoolean(SHAKE_TO_REVEAL_KEY, true);
+    }
+
+    public boolean shouldUseNearby() {
+        return sharedPreferences.getBoolean(USE_NEARBY_KEY, false);
+    }
+
+    public void setUseNearby(final boolean shouldUseNearby) {
+        sharedPreferences.edit().putBoolean(USE_NEARBY_KEY, shouldUseNearby).apply();
+    }
+
+    public boolean isNearbyAllowed() {
+        return sharedPreferences.getBoolean(NEARBY_ALLOWED_KEY, false);
+    }
+
+    public void setNearbyAllowed(final boolean nearbyAllowed) {
+        sharedPreferences.edit().putBoolean(NEARBY_ALLOWED_KEY, nearbyAllowed).apply();
     }
 }
