@@ -6,6 +6,7 @@ package nl.endran.scrumpoker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.design.widget.NavigationView;
@@ -16,7 +17,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.android.gms.common.api.Status;
 
 import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
@@ -25,16 +30,19 @@ import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
 import nl.endran.scrumpoker.fragments.cardselection.DeckType;
 import nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment;
 import nl.endran.scrumpoker.fragments.cardselection.SettingsFragment;
+import nl.endran.scrumpoker.nearby.NearbyHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends BaseActivity {
 
+    private static final int REQUEST_RESOLVE_ERROR = 892374;
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
-    private SelectionBackgroundFragment selectionBackgroundFragment;
+    private SelectionBackgroundFragment quickSettingsFragment;
     private DrawerLayout drawer;
     private FragmentManager supportFragmentManager;
     private Preferences preferences;
+    private NearbyHelper nearbyHelper;
 
     @Override
     @CallSuper
@@ -53,7 +61,7 @@ public class MainActivity extends BaseActivity {
 
         supportFragmentManager = getSupportFragmentManager();
 
-        selectionBackgroundFragment = (SelectionBackgroundFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSelectionBackground);
+        quickSettingsFragment = (SelectionBackgroundFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSelectionBackground);
         cardSelectionFragment = (CardSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardSelection);
         cardDisplayFragment = (CardDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardDisplay);
 
@@ -71,10 +79,13 @@ public class MainActivity extends BaseActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        nearbyHelper = new NearbyHelper(getApplicationContext(), preferences);
+        quickSettingsFragment.setNearbyHelper(nearbyHelper);
+
         DeckType standard = preferences.getDeckType();
         setCardsAndShow(standard);
 
-        selectionBackgroundFragment.setPreferences(preferences);
+        quickSettingsFragment.setPreferences(preferences);
     }
 
     private void setCardsAndShow(final DeckType deckType) {
@@ -87,7 +98,7 @@ public class MainActivity extends BaseActivity {
 
     private void showCardSelection() {
         cardDisplayFragment.hide();
-        selectionBackgroundFragment.hide();
+        quickSettingsFragment.hide();
         cardSelectionFragment.show(new CardSelectionFragment.Listener() {
             @Override
             public void onCardSelected(final CardSelection cardSelection) {
@@ -99,17 +110,32 @@ public class MainActivity extends BaseActivity {
     private void showSelectionBackgroundFragment(final CardSelection cardSelection) {
         cardDisplayFragment.hide();
         cardSelectionFragment.hide();
-        selectionBackgroundFragment.show(new SelectionBackgroundFragment.Listener() {
+        quickSettingsFragment.show(new SelectionBackgroundFragment.Listener() {
             @Override
             public void onShowCardClicked() {
                 showCardDisplay(cardSelection);
+            }
+
+            @Override
+            public void onNearbyPermissionRequested(final Status status) {
+                if (status != null && status.hasResolution()) {
+                    try {
+                        status.startResolutionForResult(MainActivity.this,
+                                REQUEST_RESOLVE_ERROR);
+                    } catch (IntentSender.SendIntentException e) {
+                        Log.e("NearBy", "SendIntentException", e);
+                        Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void showCardDisplay(final CardSelection cardSelection) {
         cardSelectionFragment.hide();
-        selectionBackgroundFragment.hide();
+        quickSettingsFragment.hide();
         cardDisplayFragment.show(cardSelection);
     }
 
@@ -197,4 +223,33 @@ public class MainActivity extends BaseActivity {
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        nearbyHelper.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        nearbyHelper.stop();
+    }
+
+//    // This is called in response to a button tap in the Nearby permission dialog. TODO
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == REQUEST_RESOLVE_ERROR) {
+//            mResolvingError = false;
+//            if (resultCode == RESULT_OK) {
+//                // Permission granted or error resolved successfully then we proceed
+//                // with publish and subscribe..
+//                publishAndSubscribe();
+//            } else {
+//                // This may mean that user had rejected to grant nearby permission.
+//                Log.i(TAG, "Failed to resolve error with code " + resultCode);
+//            }
+//        }
+//    }
 }

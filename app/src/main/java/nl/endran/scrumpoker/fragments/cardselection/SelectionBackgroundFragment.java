@@ -18,18 +18,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.Preferences;
 import nl.endran.scrumpoker.R;
+import nl.endran.scrumpoker.nearby.PermissionCheckCallback;
 import nl.endran.scrumpoker.util.ShakeManager;
 
 public class SelectionBackgroundFragment extends Fragment {
 
     public interface Listener {
         void onShowCardClicked();
+
+        void onNearbyPermissionRequested(@Nullable final Status status);
     }
 
     @Bind(R.id.linearLayoutQuickSettings)
@@ -47,10 +53,14 @@ public class SelectionBackgroundFragment extends Fragment {
     @Bind(R.id.switchShakeToReveal)
     SwitchCompat switchShakeToReveal;
 
+    @Bind(R.id.switchUseNearby)
+    SwitchCompat switchUseNearby;
+
     @Nullable
     private Listener listener;
     private Preferences preferences;
     private ShakeManager shakeManager;
+    private NearbyHelper nearbyHelper;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
@@ -88,10 +98,12 @@ public class SelectionBackgroundFragment extends Fragment {
         boolean shouldHideAfterSelection = preferences.shouldHideAfterSelection();
         boolean shouldShowQuickSettings = preferences.shouldShowQuickSettings();
         boolean shouldRevealAfterShake = preferences.shouldRevealAfterShake();
+        boolean shouldUseNearby = preferences.shouldUseNearby();
 
         switchHideAfterSelection.setChecked(shouldHideAfterSelection);
         switchShowQuickSettings.setChecked(shouldShowQuickSettings && shouldHideAfterSelection);
         switchShakeToReveal.setChecked(shouldRevealAfterShake);
+        switchUseNearby.setChecked(shouldUseNearby);
 
         viewQuickSettings.setVisibility(shouldShowQuickSettings ? View.VISIBLE : View.INVISIBLE);
 
@@ -155,9 +167,33 @@ public class SelectionBackgroundFragment extends Fragment {
 
     @OnCheckedChanged(R.id.switchUseNearby)
     public void onSwitchUseNearbySelectionChanged(final boolean checked) {
+        if (checked) {
+            nearbyHelper.verifyPermission(new PermissionCheckCallback.Listener() {
+                @Override
+                public void onPermissionAllowed() {
+                    preferences.setUseNearby(true);
+                    switchHideAfterSelection.setChecked(true);
+                }
+
+                @Override
+                public void onPermissionNotAllowed(final Status status) {
+                    preferences.setUseNearby(false);
+                    switchUseNearby.setChecked(false);
+                    if (listener != null) {
+                        listener.onNearbyPermissionRequested(status);
+                    }
+                }
+            });
+        } else {
+            preferences.setUseNearby(false);
+        }
     }
 
     public void setPreferences(final Preferences preferences) {
         this.preferences = preferences;
+    }
+
+    public void setNearbyHelper(final NearbyHelper nearbyHelper) {
+        this.nearbyHelper = nearbyHelper;
     }
 }

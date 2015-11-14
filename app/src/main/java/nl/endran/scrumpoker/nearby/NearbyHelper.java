@@ -17,7 +17,6 @@ import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import nl.endran.scrumpoker.Preferences;
-import nl.endran.scrumpoker.nearby.PermissionCheckCallback;
 
 public class NearbyHelper {
 
