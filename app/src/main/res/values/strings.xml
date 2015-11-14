@@ -46,10 +46,6 @@
     <string name="no_phones_found">It seems nobody is there… Are you and your palls using the same app? And is nearby enabled for them as well?</string>
     <string name="phones_found">Waiting for %1$s people to choose a card. %2$s have already made up their mind.</string>
 
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1276897370009998/5453903067</string>
-    <string name="transition_card" translatable="false">transition_card</string>
-    <string name="ad_url" translatable="false">http://endran.nl/scrumpoker/ads.php</string>
-
     <string name="standard">Standard</string>
     <string name="fibonacci">Fibonacci</string>
     <string name="t_shirt">T-Shirt</string>
@@ -58,5 +54,7 @@
     <string name="settings">Settings</string>
     <string name="share">Share</string>
     <string name="about">About</string>
+
+    <string name="error_google_api">There seems to be an error using this function right now… </string>
 
 </resources>
