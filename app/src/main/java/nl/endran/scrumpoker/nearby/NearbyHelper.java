@@ -15,10 +15,19 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.nearby.messages.PublishOptions;
+import com.google.android.gms.nearby.messages.Strategy;
+import com.google.android.gms.nearby.messages.SubscribeOptions;
 
 import nl.endran.scrumpoker.Preferences;
 
 public class NearbyHelper {
+
+    public interface Listener {
+        void onReady();
+    }
+
+    private final PublishOptions publishOptions;
 
     private boolean isConnected = false;
 
@@ -30,15 +39,32 @@ public class NearbyHelper {
 
     private int messageCounter = 0;
     private int subscriberCounter = 0;
+    private Listener listener;
+    private final SubscribeOptions subscribeOptions;
 
     public NearbyHelper(@NonNull final Context context, @NonNull final Preferences preferences) {
         this.preferences = preferences;
+
+        Strategy strategy = new Strategy.Builder()
+                .setDistanceType(Strategy.DISTANCE_TYPE_EARSHOT)
+                .setDiscoveryMode(Strategy.DISCOVERY_MODE_DEFAULT)
+                .build();
+
+        subscribeOptions = new SubscribeOptions.Builder()
+                .setStrategy(strategy)
+                .build();
+
+        publishOptions = new PublishOptions.Builder()
+                .setStrategy(strategy)
+                .build();
+
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(final Bundle bundle) {
                         isConnected = true;
+                        listener.onReady();
 
                         Nearby.Messages.getPermissionStatus(googleApiClient).setResultCallback(new PermissionCheckCallback(new PermissionCheckCallback.Listener() {
                             @Override
@@ -68,9 +94,12 @@ public class NearbyHelper {
                 .build();
     }
 
-    public void start() {
+    public void start(final Listener listener) {
         if (!googleApiClient.isConnected()) {
+            this.listener = listener;
             googleApiClient.connect();
+        } else {
+            listener.onReady();
         }
     }
 
@@ -111,7 +140,7 @@ public class NearbyHelper {
         return isConnected;
     }
 
-    private void unPublishAll() {
+    public void unPublishAll() {
         while (messageArray.size() > 0) {
             Message message = messageArray.valueAt(0);
             messageArray.removeAt(0);
@@ -119,7 +148,7 @@ public class NearbyHelper {
         }
     }
 
-    private void unSubscribeAll() {
+    public void unSubscribeAll() {
         while (subscriberArray.size() > 0) {
             MessageListener subscriber = subscriberArray.valueAt(0);
             subscriberArray.removeAt(0);
@@ -134,7 +163,7 @@ public class NearbyHelper {
         Message message = new Message(messageBytes);
         messageArray.put(index, message);
 
-        Nearby.Messages.publish(googleApiClient, message);
+        Nearby.Messages.publish(googleApiClient, message, publishOptions);
 
         return index;
     }
@@ -152,7 +181,7 @@ public class NearbyHelper {
 
         subscriberArray.put(index, subscriber);
 
-        Nearby.Messages.subscribe(googleApiClient, subscriber);
+        Nearby.Messages.subscribe(googleApiClient, subscriber, subscribeOptions);
 
         return index;
     }

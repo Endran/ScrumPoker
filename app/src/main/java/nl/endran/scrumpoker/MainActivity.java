@@ -23,6 +23,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.MessageListener;
+
+import java.nio.charset.StandardCharsets;
 
 import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
@@ -38,7 +42,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_RESOLVE_ERROR = 892374;
-    
+
+    public static final byte[] SHOWING_CARD = "ShowingCard".getBytes();
+    public static final byte[] SELECTING_CARD = "SelectingCard".getBytes();
+    public static final byte[] CARD_SELECTED = "CardSelected".getBytes();
+
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
     private SelectionBackgroundFragment quickSettingsFragment;
@@ -46,6 +54,7 @@ public class MainActivity extends BaseActivity {
     private FragmentManager supportFragmentManager;
     private Preferences preferences;
     private NearbyHelper nearbyHelper;
+    private byte[] currentMessage;
 
     @Override
     @CallSuper
@@ -92,6 +101,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setCardsAndShow(final DeckType deckType) {
+
         closeDrawer();
         resetMenuScreens();
         preferences.setDeckType(deckType);
@@ -100,6 +110,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCardSelection() {
+        publishState(SELECTING_CARD);
+
         cardDisplayFragment.hide();
         quickSettingsFragment.hide();
         cardSelectionFragment.show(new CardSelectionFragment.Listener() {
@@ -111,6 +123,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showSelectionBackgroundFragment(final CardSelection cardSelection) {
+        publishState(CARD_SELECTED);
+
         cardDisplayFragment.hide();
         cardSelectionFragment.hide();
         quickSettingsFragment.show(new SelectionBackgroundFragment.Listener() {
@@ -124,6 +138,15 @@ public class MainActivity extends BaseActivity {
                 requestedNearbyPermission();
             }
         });
+    }
+
+    private void publishState(final byte[] message) {
+        if (nearbyHelper.isNearbyAllowed() && nearbyHelper.isConnected()) {
+            nearbyHelper.unPublishAll();
+            nearbyHelper.publishMessage(message);
+        } else {
+            currentMessage = message;
+        }
     }
 
     private void requestedNearbyPermission() {
@@ -152,6 +175,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCardDisplay(final CardSelection cardSelection) {
+        publishState(SHOWING_CARD);
         cardSelectionFragment.hide();
         quickSettingsFragment.hide();
         cardDisplayFragment.show(cardSelection);
@@ -252,7 +276,27 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        nearbyHelper.start();
+        nearbyHelper.start(new NearbyHelper.Listener() {
+            @Override
+            public void onReady() {
+                if (currentMessage != null) {
+                    nearbyHelper.publishMessage(currentMessage);
+
+                    nearbyHelper.subscribe(new MessageListener() {
+                        @Override
+                        public void onFound(final Message message) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String string = new String(message.getContent(), StandardCharsets.UTF_8);
+                                    Toast.makeText(MainActivity.this, "Received " + string, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
