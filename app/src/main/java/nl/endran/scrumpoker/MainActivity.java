@@ -38,6 +38,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_RESOLVE_ERROR = 892374;
+    
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
     private SelectionBackgroundFragment quickSettingsFragment;
@@ -210,9 +211,16 @@ public class MainActivity extends BaseActivity {
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_about) {
-            showSettingsFragment(new AboutFragment());
+            showFragment(new AboutFragment());
         } else if (id == R.id.nav_settings) {
-            showSettingsFragment(new SettingsFragment());
+            SettingsFragment fragment = new SettingsFragment();
+            fragment.setListener(new SettingsFragment.Listener() {
+                @Override
+                public void onNearbyPermissionRequested() {
+                    requestedNearbyPermission();
+                }
+            });
+            showFragment(fragment);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -221,7 +229,7 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    private void showSettingsFragment(final Fragment fragment) {
+    private void showFragment(final Fragment fragment) {
         resetMenuScreens();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
         transaction.addToBackStack(fragment.getClass().getName());
