@@ -108,7 +108,7 @@ public class NearbyManager {
     }
 
     public void setState(@NonNull final State state) {
-        if (nearbyHelper.isNearbyAllowed() && nearbyHelper.isConnected()) {
+        if (nearbyHelper.isNearbyAllowed() && preferences.shouldUseNearby() && nearbyHelper.isConnected()) {
             nearbyHelper.unPublishAll();
             String uniqueId = preferences.getUniqueId();
             stateMap.put(uniqueId, state);

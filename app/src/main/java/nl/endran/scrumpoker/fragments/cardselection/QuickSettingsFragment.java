@@ -33,6 +33,8 @@ public class QuickSettingsFragment extends Fragment {
         void onShowCardClicked();
 
         void onNearbyPermissionRequested();
+
+        void onStopNearby();
     }
 
     @Bind(R.id.linearLayoutQuickSettings)
@@ -165,12 +167,17 @@ public class QuickSettingsFragment extends Fragment {
     public void onSwitchUseNearbySelectionChanged(final boolean checked) {
         if (!checked) {
             preferences.setUseNearby(false);
-        } else if (preferences.isNearbyAllowed()) {
-            preferences.setUseNearby(true);
-            switchHideAfterSelection.setChecked(true);
-        } else if (listener != null) {
-            switchHideAfterSelection.setChecked(true);
-            listener.onNearbyPermissionRequested();
+            if (listener != null) {
+                listener.onStopNearby();
+            }
+        } else {
+            if (preferences.isNearbyAllowed()) {
+                preferences.setUseNearby(true);
+                switchHideAfterSelection.setChecked(true);
+            }
+            if (listener != null) {
+                listener.onNearbyPermissionRequested();
+            }
         }
     }
 

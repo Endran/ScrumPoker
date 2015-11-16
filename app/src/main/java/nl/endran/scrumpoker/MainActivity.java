@@ -99,6 +99,10 @@ public class MainActivity extends BaseActivity {
         setCardsAndShow(standard);
 
         quickSettingsFragment.setPreferences(preferences);
+
+        if(preferences.shouldUseNearby()){
+            requestedNearbyPermission();
+        }
     }
 
     private void setCardsAndShow(final DeckType deckType) {
@@ -138,30 +142,50 @@ public class MainActivity extends BaseActivity {
             public void onNearbyPermissionRequested() {
                 requestedNearbyPermission();
             }
+
+            @Override
+            public void onStopNearby() {
+                nearbyManager.stop();
+                nearbyHelper.stop();
+            }
         });
     }
 
     private void requestedNearbyPermission() {
-        nearbyHelper.requestPermission(new PermissionCheckCallback.Listener() {
+        nearbyHelper.start(new NearbyHelper.Listener() {
             @Override
-            public void onPermissionAllowed() {
-                preferences.setNearbyAllowed(true);
-            }
-
-            @Override
-            public void onPermissionNotAllowed(@Nullable final Status status) {
-                preferences.setNearbyAllowed(false);
-                if (status != null && status.hasResolution()) {
-                    try {
-                        status.startResolutionForResult(MainActivity.this,
-                                REQUEST_RESOLVE_ERROR);
-                    } catch (IntentSender.SendIntentException e) {
-                        Log.e("NearBy", "SendIntentException", e);
-                        Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+            public void onReady() {
+                nearbyHelper.requestPermission(new PermissionCheckCallback.Listener() {
+                    @Override
+                    public void onPermissionAllowed() {
+                        preferences.setNearbyAllowed(true);
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
-                }
+
+                    @Override
+                    public void onPermissionNotAllowed(@Nullable final Status status) {
+                        preferences.setNearbyAllowed(false);
+                        if (status != null && status.hasResolution()) {
+                            try {
+                                status.startResolutionForResult(MainActivity.this,
+                                        REQUEST_RESOLVE_ERROR);
+                            } catch (IntentSender.SendIntentException e) {
+                                Log.e("NearBy", "SendIntentException", e);
+                                Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                nearbyManager.start(new NearbyManager.Listener() {
+                    @Override
+                    public void onEverybodyReady() {
+                        if (cardSelection != null) {
+                            showCardDisplay();
+                        }
+                    }
+                });
             }
         });
     }
@@ -264,24 +288,6 @@ public class MainActivity extends BaseActivity {
                 "Hey check out this awesome Scrum Poker app at: https://play.google.com/store/apps/details?id=nl.endran.scrumpoker");
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        nearbyHelper.start(new NearbyHelper.Listener() {
-            @Override
-            public void onReady() {
-                nearbyManager.start(new NearbyManager.Listener() {
-                    @Override
-                    public void onEverybodyReady() {
-                        if (cardSelection != null) {
-                            showCardDisplay();
-                        }
-                    }
-                });
-            }
-        });
     }
 
     @Override

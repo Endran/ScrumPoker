@@ -29,8 +29,6 @@ public class NearbyHelper {
 
     private final PublishOptions publishOptions;
 
-    private boolean isConnected = false;
-
     private GoogleApiClient googleApiClient;
     private Preferences preferences;
 
@@ -63,7 +61,6 @@ public class NearbyHelper {
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(final Bundle bundle) {
-                        isConnected = true;
                         listener.onReady();
 
                         Nearby.Messages.getPermissionStatus(googleApiClient).setResultCallback(new PermissionCheckCallback(new PermissionCheckCallback.Listener() {
@@ -82,13 +79,11 @@ public class NearbyHelper {
 
                     @Override
                     public void onConnectionSuspended(final int i) {
-                        isConnected = false;
                     }
                 })
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(final ConnectionResult connectionResult) {
-                        isConnected = false;
                     }
                 })
                 .build();
@@ -112,21 +107,25 @@ public class NearbyHelper {
     }
 
     public void requestPermission(final PermissionCheckCallback.Listener listener) {
-        if (isConnected() && !isNearbyAllowed()) {
-            Nearby.Messages.getPermissionStatus(googleApiClient).setResultCallback(new PermissionCheckCallback(new PermissionCheckCallback.Listener() {
-                @Override
-                public void onPermissionAllowed() {
-                    preferences.setNearbyAllowed(true);
-                    listener.onPermissionAllowed();
-                }
+        if (isConnected()) {
+            if (isNearbyAllowed()) {
+                listener.onPermissionAllowed();
+            } else {
+                Nearby.Messages.getPermissionStatus(googleApiClient).setResultCallback(new PermissionCheckCallback(new PermissionCheckCallback.Listener() {
+                    @Override
+                    public void onPermissionAllowed() {
+                        preferences.setNearbyAllowed(true);
+                        listener.onPermissionAllowed();
+                    }
 
-                @Override
-                public void onPermissionNotAllowed(final Status status) {
-                    preferences.setNearbyAllowed(false);
-                    preferences.setUseNearby(false);
-                    listener.onPermissionNotAllowed(status);
-                }
-            }));
+                    @Override
+                    public void onPermissionNotAllowed(final Status status) {
+                        preferences.setNearbyAllowed(false);
+                        preferences.setUseNearby(false);
+                        listener.onPermissionNotAllowed(status);
+                    }
+                }));
+            }
         } else {
             listener.onPermissionNotAllowed(null);
         }
@@ -137,7 +136,7 @@ public class NearbyHelper {
     }
 
     public boolean isConnected() {
-        return isConnected;
+        return googleApiClient.isConnected();
     }
 
     public void unPublishAll() {
