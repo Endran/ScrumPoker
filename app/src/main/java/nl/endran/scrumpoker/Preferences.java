@@ -11,6 +11,7 @@ import nl.endran.scrumpoker.fragments.cardselection.DeckType;
 
 public class Preferences {
 
+    public static final String UNIQUE_ID_KEY= "UNIQUE_ID_KEY";
     public static final String DECK_TYPE_KEY = "DECK_TYPE_KEY";
     public static final String HIDE_AFTER_SELECTION_KEY = "HIDE_AFTER_SELECTION_KEY";
     public static final String SHOW_QUICK_SETTINGS_KEY = "SHOW_QUICK_SETTINGS_KEY";
@@ -19,6 +20,7 @@ public class Preferences {
     public static final String USE_NEARBY_KEY= "USE_NEARBY_KEY";
 
     private final SharedPreferences sharedPreferences;
+    private Object uniqueId;
 
     public Preferences(final Context context) {
         this.sharedPreferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
@@ -71,5 +73,13 @@ public class Preferences {
 
     public void setNearbyAllowed(final boolean nearbyAllowed) {
         sharedPreferences.edit().putBoolean(NEARBY_ALLOWED_KEY, nearbyAllowed).apply();
+    }
+
+    public String getUniqueId() {
+        return sharedPreferences.getString(UNIQUE_ID_KEY, "");
+    }
+
+    public void setUniqueId(final String uniqueId) {
+         sharedPreferences.edit().putString(UNIQUE_ID_KEY, uniqueId).apply();
     }
 }

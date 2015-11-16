@@ -6,6 +6,8 @@ package nl.endran.scrumpoker;
 
 import android.app.Application;
 
+import java.util.UUID;
+
 import nl.endran.scrumpoker.wrappers.Analytics;
 import nl.endran.scrumpoker.wrappers.CrashTracking;
 import nl.endran.scrumpoker.wrappers.FabricFactory;
@@ -23,6 +25,11 @@ public class App extends Application {
         initCrashTracking();
         initAnalytics();
         initCalligraphy();
+
+        Preferences preferences = new Preferences(getApplicationContext());
+        if (preferences.getUniqueId().isEmpty()) {
+            preferences.setUniqueId(UUID.randomUUID().toString());
+        }
     }
 
     private void initCrashTracking() {
