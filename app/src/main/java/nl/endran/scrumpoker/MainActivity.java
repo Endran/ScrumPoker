@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -29,23 +30,30 @@ import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelection;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
 import nl.endran.scrumpoker.fragments.cardselection.DeckType;
-import nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment;
+import nl.endran.scrumpoker.fragments.cardselection.QuickSettingsFragment;
 import nl.endran.scrumpoker.fragments.cardselection.SettingsFragment;
 import nl.endran.scrumpoker.nearby.NearbyHelper;
+import nl.endran.scrumpoker.nearby.NearbyManager;
 import nl.endran.scrumpoker.nearby.PermissionCheckCallback;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_RESOLVE_ERROR = 892374;
-    
+
+    public static final byte[] SHOWING_CARD = "ShowingCard".getBytes();
+    public static final byte[] SELECTING_CARD = "SelectingCard".getBytes();
+    public static final byte[] CARD_SELECTED = "CardSelected".getBytes();
+
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
-    private SelectionBackgroundFragment quickSettingsFragment;
+    private QuickSettingsFragment quickSettingsFragment;
     private DrawerLayout drawer;
     private FragmentManager supportFragmentManager;
     private Preferences preferences;
     private NearbyHelper nearbyHelper;
+    private NearbyManager nearbyManager;
+    private CardSelection cardSelection;
 
     @Override
     @CallSuper
@@ -64,7 +72,7 @@ public class MainActivity extends BaseActivity {
 
         supportFragmentManager = getSupportFragmentManager();
 
-        quickSettingsFragment = (SelectionBackgroundFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSelectionBackground);
+        quickSettingsFragment = (QuickSettingsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentQuickSettingsFragment);
         cardSelectionFragment = (CardSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardSelection);
         cardDisplayFragment = (CardDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardDisplay);
 
@@ -83,12 +91,18 @@ public class MainActivity extends BaseActivity {
         toggle.syncState();
 
         nearbyHelper = new NearbyHelper(getApplicationContext(), preferences);
+        nearbyManager = new NearbyManager(preferences, nearbyHelper, new Handler());
+
         quickSettingsFragment.setNearbyHelper(nearbyHelper);
 
         DeckType standard = preferences.getDeckType();
         setCardsAndShow(standard);
 
         quickSettingsFragment.setPreferences(preferences);
+
+        if(preferences.shouldUseNearby()){
+            requestedNearbyPermission();
+        }
     }
 
     private void setCardsAndShow(final DeckType deckType) {
@@ -100,6 +114,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCardSelection() {
+        nearbyManager.setState(NearbyManager.State.SELECTING);
+
         cardDisplayFragment.hide();
         quickSettingsFragment.hide();
         cardSelectionFragment.show(new CardSelectionFragment.Listener() {
@@ -111,50 +127,75 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showSelectionBackgroundFragment(final CardSelection cardSelection) {
+        this.cardSelection = cardSelection;
+        nearbyManager.setState(NearbyManager.State.READY);
+
         cardDisplayFragment.hide();
         cardSelectionFragment.hide();
-        quickSettingsFragment.show(new SelectionBackgroundFragment.Listener() {
+        quickSettingsFragment.show(new QuickSettingsFragment.Listener() {
             @Override
             public void onShowCardClicked() {
-                showCardDisplay(cardSelection);
+                showCardDisplay();
             }
 
             @Override
             public void onNearbyPermissionRequested() {
                 requestedNearbyPermission();
             }
+
+            @Override
+            public void onStopNearby() {
+                nearbyManager.stop();
+                nearbyHelper.stop();
+            }
         });
     }
 
     private void requestedNearbyPermission() {
-        nearbyHelper.requestPermission(new PermissionCheckCallback.Listener() {
+        nearbyHelper.start(new NearbyHelper.Listener() {
             @Override
-            public void onPermissionAllowed() {
-                preferences.setNearbyAllowed(true);
-            }
-
-            @Override
-            public void onPermissionNotAllowed(@Nullable final Status status) {
-                preferences.setNearbyAllowed(false);
-                if (status != null && status.hasResolution()) {
-                    try {
-                        status.startResolutionForResult(MainActivity.this,
-                                REQUEST_RESOLVE_ERROR);
-                    } catch (IntentSender.SendIntentException e) {
-                        Log.e("NearBy", "SendIntentException", e);
-                        Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+            public void onReady() {
+                nearbyHelper.requestPermission(new PermissionCheckCallback.Listener() {
+                    @Override
+                    public void onPermissionAllowed() {
+                        preferences.setNearbyAllowed(true);
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
-                }
+
+                    @Override
+                    public void onPermissionNotAllowed(@Nullable final Status status) {
+                        preferences.setNearbyAllowed(false);
+                        if (status != null && status.hasResolution()) {
+                            try {
+                                status.startResolutionForResult(MainActivity.this,
+                                        REQUEST_RESOLVE_ERROR);
+                            } catch (IntentSender.SendIntentException e) {
+                                Log.e("NearBy", "SendIntentException", e);
+                                Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.error_google_api, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                nearbyManager.start(new NearbyManager.Listener() {
+                    @Override
+                    public void onEverybodyReady() {
+                        if (cardSelection != null) {
+                            showCardDisplay();
+                        }
+                    }
+                });
             }
         });
     }
 
-    private void showCardDisplay(final CardSelection cardSelection) {
+    private void showCardDisplay() {
+        nearbyManager.setState(NearbyManager.State.SHOWING);
         cardSelectionFragment.hide();
         quickSettingsFragment.hide();
         cardDisplayFragment.show(cardSelection);
+        cardSelection = null;
     }
 
     @Override
@@ -250,15 +291,10 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        nearbyHelper.start();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         nearbyHelper.stop();
+        nearbyManager.stop();
     }
 
     // This is called in response to a button tap in the Nearby permission dialog. TODO

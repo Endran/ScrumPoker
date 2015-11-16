@@ -27,12 +27,14 @@ import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.util.ShakeManager;
 
-public class SelectionBackgroundFragment extends Fragment {
+public class QuickSettingsFragment extends Fragment {
 
     public interface Listener {
         void onShowCardClicked();
 
         void onNearbyPermissionRequested();
+
+        void onStopNearby();
     }
 
     @Bind(R.id.linearLayoutQuickSettings)
@@ -165,12 +167,17 @@ public class SelectionBackgroundFragment extends Fragment {
     public void onSwitchUseNearbySelectionChanged(final boolean checked) {
         if (!checked) {
             preferences.setUseNearby(false);
-        } else if (preferences.isNearbyAllowed()) {
-            preferences.setUseNearby(true);
-            switchHideAfterSelection.setChecked(true);
-        } else if (listener != null) {
-            switchHideAfterSelection.setChecked(true);
-            listener.onNearbyPermissionRequested();
+            if (listener != null) {
+                listener.onStopNearby();
+            }
+        } else {
+            if (preferences.isNearbyAllowed()) {
+                preferences.setUseNearby(true);
+                switchHideAfterSelection.setChecked(true);
+            }
+            if (listener != null) {
+                listener.onNearbyPermissionRequested();
+            }
         }
     }
 
