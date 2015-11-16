@@ -27,7 +27,7 @@ import nl.endran.scrumpoker.R;
 import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.util.ShakeManager;
 
-public class SelectionBackgroundFragment extends Fragment {
+public class QuickSettingsFragment extends Fragment {
 
     public interface Listener {
         void onShowCardClicked();

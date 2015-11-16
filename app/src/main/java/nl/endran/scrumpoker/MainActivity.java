@@ -33,7 +33,7 @@ import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelection;
 import nl.endran.scrumpoker.fragments.cardselection.CardSelectionFragment;
 import nl.endran.scrumpoker.fragments.cardselection.DeckType;
-import nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment;
+import nl.endran.scrumpoker.fragments.cardselection.QuickSettingsFragment;
 import nl.endran.scrumpoker.fragments.cardselection.SettingsFragment;
 import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.nearby.PermissionCheckCallback;
@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
 
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
-    private SelectionBackgroundFragment quickSettingsFragment;
+    private QuickSettingsFragment quickSettingsFragment;
     private DrawerLayout drawer;
     private FragmentManager supportFragmentManager;
     private Preferences preferences;
@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
 
         supportFragmentManager = getSupportFragmentManager();
 
-        quickSettingsFragment = (SelectionBackgroundFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSelectionBackground);
+        quickSettingsFragment = (QuickSettingsFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentQuickSettingsFragment);
         cardSelectionFragment = (CardSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardSelection);
         cardDisplayFragment = (CardDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentCardDisplay);
 
@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity {
 
         cardDisplayFragment.hide();
         cardSelectionFragment.hide();
-        quickSettingsFragment.show(new SelectionBackgroundFragment.Listener() {
+        quickSettingsFragment.show(new QuickSettingsFragment.Listener() {
             @Override
             public void onShowCardClicked() {
                 showCardDisplay(cardSelection);

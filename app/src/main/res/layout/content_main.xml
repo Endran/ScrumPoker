@@ -23,8 +23,8 @@
     </com.google.android.gms.ads.AdView>
 
     <fragment
-        android:id="@+id/fragmentSelectionBackground"
-        android:name="nl.endran.scrumpoker.fragments.cardselection.SelectionBackgroundFragment"
+        android:id="@+id/fragmentQuickSettingsFragment"
+        android:name="nl.endran.scrumpoker.fragments.cardselection.QuickSettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/adView"/>
