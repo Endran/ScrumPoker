@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -23,10 +24,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.nearby.messages.Message;
-import com.google.android.gms.nearby.messages.MessageListener;
-
-import java.nio.charset.StandardCharsets;
 
 import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
 import nl.endran.scrumpoker.fragments.cardselection.CardDisplayFragment;
@@ -36,6 +33,7 @@ import nl.endran.scrumpoker.fragments.cardselection.DeckType;
 import nl.endran.scrumpoker.fragments.cardselection.QuickSettingsFragment;
 import nl.endran.scrumpoker.fragments.cardselection.SettingsFragment;
 import nl.endran.scrumpoker.nearby.NearbyHelper;
+import nl.endran.scrumpoker.nearby.NearbyManager;
 import nl.endran.scrumpoker.nearby.PermissionCheckCallback;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -54,7 +52,8 @@ public class MainActivity extends BaseActivity {
     private FragmentManager supportFragmentManager;
     private Preferences preferences;
     private NearbyHelper nearbyHelper;
-    private byte[] currentMessage;
+    private NearbyManager nearbyManager;
+    private CardSelection cardSelection;
 
     @Override
     @CallSuper
@@ -92,6 +91,8 @@ public class MainActivity extends BaseActivity {
         toggle.syncState();
 
         nearbyHelper = new NearbyHelper(getApplicationContext(), preferences);
+        nearbyManager = new NearbyManager(preferences, nearbyHelper, new Handler());
+
         quickSettingsFragment.setNearbyHelper(nearbyHelper);
 
         DeckType standard = preferences.getDeckType();
@@ -101,7 +102,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setCardsAndShow(final DeckType deckType) {
-
         closeDrawer();
         resetMenuScreens();
         preferences.setDeckType(deckType);
@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCardSelection() {
-        publishState(SELECTING_CARD);
+        nearbyManager.setState(NearbyManager.State.SELECTING);
 
         cardDisplayFragment.hide();
         quickSettingsFragment.hide();
@@ -123,14 +123,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showSelectionBackgroundFragment(final CardSelection cardSelection) {
-        publishState(CARD_SELECTED);
+        this.cardSelection = cardSelection;
+        nearbyManager.setState(NearbyManager.State.READY);
 
         cardDisplayFragment.hide();
         cardSelectionFragment.hide();
         quickSettingsFragment.show(new QuickSettingsFragment.Listener() {
             @Override
             public void onShowCardClicked() {
-                showCardDisplay(cardSelection);
+                showCardDisplay();
             }
 
             @Override
@@ -138,15 +139,6 @@ public class MainActivity extends BaseActivity {
                 requestedNearbyPermission();
             }
         });
-    }
-
-    private void publishState(final byte[] message) {
-        if (nearbyHelper.isNearbyAllowed() && nearbyHelper.isConnected()) {
-            nearbyHelper.unPublishAll();
-            nearbyHelper.publishMessage(message);
-        } else {
-            currentMessage = message;
-        }
     }
 
     private void requestedNearbyPermission() {
@@ -174,11 +166,12 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void showCardDisplay(final CardSelection cardSelection) {
-        publishState(SHOWING_CARD);
+    private void showCardDisplay() {
+        nearbyManager.setState(NearbyManager.State.SHOWING);
         cardSelectionFragment.hide();
         quickSettingsFragment.hide();
         cardDisplayFragment.show(cardSelection);
+        cardSelection = null;
     }
 
     @Override
@@ -279,22 +272,14 @@ public class MainActivity extends BaseActivity {
         nearbyHelper.start(new NearbyHelper.Listener() {
             @Override
             public void onReady() {
-                if (currentMessage != null) {
-                    nearbyHelper.publishMessage(currentMessage);
-
-                    nearbyHelper.subscribe(new MessageListener() {
-                        @Override
-                        public void onFound(final Message message) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String string = new String(message.getContent(), StandardCharsets.UTF_8);
-                                    Toast.makeText(MainActivity.this, "Received " + string, Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                nearbyManager.start(new NearbyManager.Listener() {
+                    @Override
+                    public void onEverybodyReady() {
+                        if (cardSelection != null) {
+                            showCardDisplay();
                         }
-                    });
-                }
+                    }
+                });
             }
         });
     }
@@ -303,6 +288,7 @@ public class MainActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         nearbyHelper.stop();
+        nearbyManager.stop();
     }
 
     // This is called in response to a button tap in the Nearby permission dialog. TODO
