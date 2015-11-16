@@ -24,12 +24,17 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import nl.endran.scrumpoker.Preferences;
 import nl.endran.scrumpoker.R;
+import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.util.ShakeManager;
 
-public class SelectionBackgroundFragment extends Fragment {
+public class QuickSettingsFragment extends Fragment {
 
     public interface Listener {
         void onShowCardClicked();
+
+        void onNearbyPermissionRequested();
+
+        void onStopNearby();
     }
 
     @Bind(R.id.linearLayoutQuickSettings)
@@ -47,10 +52,14 @@ public class SelectionBackgroundFragment extends Fragment {
     @Bind(R.id.switchShakeToReveal)
     SwitchCompat switchShakeToReveal;
 
+    @Bind(R.id.switchUseNearby)
+    SwitchCompat switchUseNearby;
+
     @Nullable
     private Listener listener;
     private Preferences preferences;
     private ShakeManager shakeManager;
+    private NearbyHelper nearbyHelper;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
@@ -88,19 +97,19 @@ public class SelectionBackgroundFragment extends Fragment {
         boolean shouldHideAfterSelection = preferences.shouldHideAfterSelection();
         boolean shouldShowQuickSettings = preferences.shouldShowQuickSettings();
         boolean shouldRevealAfterShake = preferences.shouldRevealAfterShake();
+        boolean shouldUseNearby = preferences.shouldUseNearby();
 
         switchHideAfterSelection.setChecked(shouldHideAfterSelection);
         switchShowQuickSettings.setChecked(shouldShowQuickSettings && shouldHideAfterSelection);
         switchShakeToReveal.setChecked(shouldRevealAfterShake);
+        switchUseNearby.setChecked(shouldUseNearby);
 
         viewQuickSettings.setVisibility(shouldShowQuickSettings ? View.VISIBLE : View.INVISIBLE);
 
         if (!shouldHideAfterSelection) {
             informListener();
-        } else {
-            if (shouldRevealAfterShake) {
-                installShakeListener();
-            }
+        } else if (shouldRevealAfterShake) {
+            installShakeListener();
         }
     }
 
@@ -129,6 +138,7 @@ public class SelectionBackgroundFragment extends Fragment {
         if (!checked) {
             switchShowQuickSettings.setChecked(false);
             switchShakeToReveal.setChecked(false);
+            switchUseNearby.setChecked(false);
         }
     }
 
@@ -155,9 +165,27 @@ public class SelectionBackgroundFragment extends Fragment {
 
     @OnCheckedChanged(R.id.switchUseNearby)
     public void onSwitchUseNearbySelectionChanged(final boolean checked) {
+        if (!checked) {
+            preferences.setUseNearby(false);
+            if (listener != null) {
+                listener.onStopNearby();
+            }
+        } else {
+            if (preferences.isNearbyAllowed()) {
+                preferences.setUseNearby(true);
+                switchHideAfterSelection.setChecked(true);
+            }
+            if (listener != null) {
+                listener.onNearbyPermissionRequested();
+            }
+        }
     }
 
     public void setPreferences(final Preferences preferences) {
         this.preferences = preferences;
+    }
+
+    public void setNearbyHelper(final NearbyHelper nearbyHelper) {
+        this.nearbyHelper = nearbyHelper;
     }
 }

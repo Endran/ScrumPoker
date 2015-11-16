@@ -5,6 +5,7 @@
 package nl.endran.scrumpoker.fragments.cardselection;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -19,6 +20,10 @@ import nl.endran.scrumpoker.R;
 
 public class SettingsFragment extends Fragment {
 
+    public interface Listener {
+        void onNearbyPermissionRequested();
+    }
+
     @Bind(R.id.switchHideAfterSelection)
     SwitchCompat switchHideAfterSelection;
 
@@ -28,7 +33,13 @@ public class SettingsFragment extends Fragment {
     @Bind(R.id.switchShakeToReveal)
     SwitchCompat switchShakeToReveal;
 
+    @Bind(R.id.switchUseNearby)
+    SwitchCompat switchUseNearby;
+
     private Preferences preferences;
+
+    @Nullable
+    private Listener listener;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
@@ -40,8 +51,15 @@ public class SettingsFragment extends Fragment {
         switchHideAfterSelection.setChecked(preferences.shouldHideAfterSelection());
         switchShowQuickSettings.setChecked(preferences.shouldShowQuickSettings());
         switchShakeToReveal.setChecked(preferences.shouldRevealAfterShake());
+        switchUseNearby.setChecked(preferences.shouldUseNearby());
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        listener = null;
     }
 
     @OnCheckedChanged(R.id.switchHideAfterSelection)
@@ -50,6 +68,7 @@ public class SettingsFragment extends Fragment {
         if (!checked) {
             switchShowQuickSettings.setChecked(false);
             switchShakeToReveal.setChecked(false);
+            switchUseNearby.setChecked(false);
         }
     }
 
@@ -71,5 +90,18 @@ public class SettingsFragment extends Fragment {
 
     @OnCheckedChanged(R.id.switchUseNearby)
     public void onSwitchUseNearbySelectionChanged(final boolean checked) {
+        if (!checked) {
+            preferences.setUseNearby(false);
+        } else if (preferences.isNearbyAllowed()) {
+            preferences.setUseNearby(true);
+            switchHideAfterSelection.setChecked(true);
+        } else if (listener != null) {
+            switchHideAfterSelection.setChecked(true);
+            listener.onNearbyPermissionRequested();
+        }
+    }
+
+    public void setListener(@Nullable final Listener listener) {
+        this.listener = listener;
     }
 }
