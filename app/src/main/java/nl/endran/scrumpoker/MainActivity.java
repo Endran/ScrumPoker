@@ -241,6 +241,8 @@ public class MainActivity extends BaseActivity {
             setCardsAndShow(DeckType.FIBONACCI);
         } else if (id == R.id.nav_shirt) {
             setCardsAndShow(DeckType.SHIRT);
+        } else if (id == R.id.nav_natural) {
+            setCardsAndShow(DeckType.NATURAL);
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_about) {

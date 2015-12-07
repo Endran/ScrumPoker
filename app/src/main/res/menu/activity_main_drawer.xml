@@ -16,6 +16,10 @@
                     android:id="@+id/nav_shirt"
                     android:icon="@drawable/ic_menu_shirt"
                     android:title="@string/t_shirt"/>
+                <item
+                    android:id="@+id/nav_natural"
+                    android:icon="@drawable/ic_natural"
+                    android:title="@string/natural"/>
             </group>
         </menu>
     </item>

@@ -16,9 +16,22 @@
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>
+    <string name="four">4</string>
     <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
     <string name="eigth">8</string>
+    <string name="nine">9</string>
+    <string name="ten">10</string>
+    <string name="eleven">11</string>
+    <string name="twelve">12</string>
     <string name="thirteen">13</string>
+    <string name="fourteen">14</string>
+    <string name="fifteen">15</string>
+    <string name="sixteen">16</string>
+    <string name="seventeen">17</string>
+    <string name="eighteen">18</string>
+    <string name="nineteen">19</string>
     <string name="twenty">20</string>
     <string name="twenty_one">21</string>
     <string name="thirty_four">34</string>
@@ -49,6 +62,7 @@
     <string name="standard">Standard</string>
     <string name="fibonacci">Fibonacci</string>
     <string name="t_shirt">T-Shirt</string>
+    <string name="natural">Natural</string>
     <string name="deck_type">Deck type</string>
     <string name="menu">Menu</string>
     <string name="settings">Settings</string>
@@ -57,5 +71,6 @@
 
     <string name="error_google_api">There seems to be an error using this function right now… </string>
     <string name="please_allow_nearby">If you wish to make use of auto reveal when others are Nearby, please allow the permissions.</string>
+
 
 </resources>
