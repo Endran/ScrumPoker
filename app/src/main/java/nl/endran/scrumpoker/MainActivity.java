@@ -41,10 +41,6 @@ public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_RESOLVE_ERROR = 892374;
 
-    public static final byte[] SHOWING_CARD = "ShowingCard".getBytes();
-    public static final byte[] SELECTING_CARD = "SelectingCard".getBytes();
-    public static final byte[] CARD_SELECTED = "CardSelected".getBytes();
-
     private CardDisplayFragment cardDisplayFragment;
     private CardSelectionFragment cardSelectionFragment;
     private QuickSettingsFragment quickSettingsFragment;
@@ -99,10 +95,6 @@ public class MainActivity extends BaseActivity {
         setCardsAndShow(standard);
 
         quickSettingsFragment.setPreferences(preferences);
-
-        if(preferences.shouldUseNearby()){
-            requestedNearbyPermission();
-        }
     }
 
     private void setCardsAndShow(final DeckType deckType) {
@@ -249,6 +241,8 @@ public class MainActivity extends BaseActivity {
             setCardsAndShow(DeckType.FIBONACCI);
         } else if (id == R.id.nav_shirt) {
             setCardsAndShow(DeckType.SHIRT);
+        } else if (id == R.id.nav_natural) {
+            setCardsAndShow(DeckType.NATURAL);
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_about) {
@@ -291,6 +285,14 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (preferences.shouldUseNearby()) {
+            requestedNearbyPermission();
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         nearbyHelper.stop();
@@ -304,6 +306,7 @@ public class MainActivity extends BaseActivity {
         if (requestCode == REQUEST_RESOLVE_ERROR) {
             if (resultCode == RESULT_OK) {
                 preferences.setNearbyAllowed(true);
+                preferences.setUseNearby(true);
             } else {
                 preferences.setNearbyAllowed(false);
                 Toast.makeText(this, R.string.please_allow_nearby, Toast.LENGTH_SHORT).show();

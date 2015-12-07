@@ -13,6 +13,11 @@ public enum DeckType {
     ),
     SHIRT(
             CardValue.XXS, CardValue.XS, CardValue.S, CardValue.M, CardValue.L, CardValue.XL, CardValue.XXL, CardValue.INFINITE, CardValue.UNKNOWN, CardValue.COFFEE
+    ),
+    NATURAL(
+            CardValue.ZERO, CardValue.ONE, CardValue.TWO, CardValue.THREE, CardValue.FOUR, CardValue.FIVE, CardValue.SIX, CardValue.SEVEN, CardValue.EIGHT, CardValue.NINE,
+            CardValue.TEN, CardValue.ELEVEN, CardValue.TWELVE, CardValue.THIRTEEN, CardValue.FOURTEEN, CardValue.FIFTEEN, CardValue.SIXTEEN, CardValue.SEVENTEEN, CardValue.EIGHTEEN, CardValue.NINETEEN,
+            CardValue.TWENTY, CardValue.INFINITE, CardValue.UNKNOWN, CardValue.COFFEE
     );
 
     private CardValue[] values;

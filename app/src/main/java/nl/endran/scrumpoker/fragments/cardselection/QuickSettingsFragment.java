@@ -117,9 +117,12 @@ public class QuickSettingsFragment extends Fragment {
         shakeManager.start(new ShakeManager.Listener() {
             @Override
             public void onShake() {
-                Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(500);
-                informListener();
+                Context context = getContext();
+                if (context != null) {
+                    Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(500);
+                    informListener();
+                }
             }
         });
     }
