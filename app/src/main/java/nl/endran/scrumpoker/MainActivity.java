@@ -23,6 +23,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
+import com.crashlytics.android.answers.ShareEvent;
 import com.google.android.gms.common.api.Status;
 
 import nl.endran.scrumpoker.fragments.cardselection.AboutFragment;
@@ -106,6 +110,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCardSelection() {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Card selection")
+                .putContentType(preferences.getDeckType().name()));
+
         nearbyManager.setState(NearbyManager.State.SELECTING);
 
         cardDisplayFragment.hide();
@@ -119,6 +127,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showSelectionBackgroundFragment(final CardSelection cardSelection) {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Card selected"));
         this.cardSelection = cardSelection;
         nearbyManager.setState(NearbyManager.State.READY);
 
@@ -173,6 +183,8 @@ public class MainActivity extends BaseActivity {
                 nearbyManager.start(new NearbyManager.Listener() {
                     @Override
                     public void onEverybodyReady() {
+                        Answers.getInstance().logCustom(new CustomEvent("Reveal")
+                                .putCustomAttribute("Type", "Nearby"));
                         if (cardSelection != null) {
                             showCardDisplay();
                         }
@@ -183,6 +195,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCardDisplay() {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Card displayed"));
         nearbyManager.setState(NearbyManager.State.SHOWING);
         cardSelectionFragment.hide();
         quickSettingsFragment.hide();
@@ -246,8 +260,12 @@ public class MainActivity extends BaseActivity {
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_about) {
+            Answers.getInstance().logContentView(new ContentViewEvent()
+                    .putContentName("About"));
             showFragment(new AboutFragment());
         } else if (id == R.id.nav_settings) {
+            Answers.getInstance().logContentView(new ContentViewEvent()
+                    .putContentName("Settings"));
             SettingsFragment fragment = new SettingsFragment();
             fragment.setListener(new SettingsFragment.Listener() {
                 @Override
@@ -274,6 +292,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void shareApp() {
+        Answers.getInstance().logShare(new ShareEvent());
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.app_name));

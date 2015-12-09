@@ -18,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -81,6 +84,8 @@ public class QuickSettingsFragment extends Fragment {
 
     @OnClick(R.id.fab)
     public void onFabClick() {
+        Answers.getInstance().logCustom(new CustomEvent("Reveal")
+                .putCustomAttribute("Type", "Click"));
         informListener();
     }
 
@@ -107,6 +112,8 @@ public class QuickSettingsFragment extends Fragment {
         viewQuickSettings.setVisibility(shouldShowQuickSettings ? View.VISIBLE : View.INVISIBLE);
 
         if (!shouldHideAfterSelection) {
+            Answers.getInstance().logCustom(new CustomEvent("Reveal")
+                    .putCustomAttribute("Type", "Instant"));
             informListener();
         } else if (shouldRevealAfterShake) {
             installShakeListener();
@@ -121,6 +128,8 @@ public class QuickSettingsFragment extends Fragment {
                 if (context != null) {
                     Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                     v.vibrate(500);
+                    Answers.getInstance().logCustom(new CustomEvent("Reveal")
+                            .putCustomAttribute("Type", "Shake"));
                     informListener();
                 }
             }
