@@ -48,7 +48,7 @@ public class Preferences {
     }
 
     public boolean shouldShowQuickSettings() {
-        return sharedPreferences.getBoolean(SHOW_QUICK_SETTINGS_KEY, true);
+        return sharedPreferences.getBoolean(SHOW_QUICK_SETTINGS_KEY, false);
     }
 
     public void setRevealAfterShake(final boolean shouldRevealAfterShake) {

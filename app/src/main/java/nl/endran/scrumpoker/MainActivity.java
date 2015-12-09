@@ -299,7 +299,6 @@ public class MainActivity extends BaseActivity {
         nearbyManager.stop();
     }
 
-    // This is called in response to a button tap in the Nearby permission dialog. TODO
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
