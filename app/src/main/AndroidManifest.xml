@@ -15,10 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/ScrumPoker">
 
-        <!--<meta-data-->
-            <!--android:name="com.google.android.nearby.messages.API_KEY"-->
-            <!--android:value="@string/nearby_api_key" />-->
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
