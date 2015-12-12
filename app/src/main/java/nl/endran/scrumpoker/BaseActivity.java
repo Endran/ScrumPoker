@@ -17,9 +17,12 @@ import com.google.android.gms.ads.AdView;
 
 import nl.endran.scrumpoker.util.AdManager;
 import nl.endran.scrumpoker.wrappers.Analytics;
+import nl.endran.scrumpoker.wrappers.Tracking;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    protected Tracking tracking;
 
     @Override
     @CallSuper
@@ -32,7 +35,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
 
-        Analytics analytics = ((App) (getApplication())).getAnalytics();
+        App application = (App) (getApplication());
+        tracking = application.getTracking();
+
+        Analytics analytics = application.getAnalytics();
         analytics.trackPage(getPageName());
 
         final AdView adView = (AdView) findViewById(R.id.adView);

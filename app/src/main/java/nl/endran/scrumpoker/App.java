@@ -9,7 +9,7 @@ import android.app.Application;
 import java.util.UUID;
 
 import nl.endran.scrumpoker.wrappers.Analytics;
-import nl.endran.scrumpoker.wrappers.CrashTracking;
+import nl.endran.scrumpoker.wrappers.Tracking;
 import nl.endran.scrumpoker.wrappers.FabricFactory;
 import nl.endran.scrumpoker.wrappers.GoogleAnalyticsFactory;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -17,6 +17,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class App extends Application {
 
     private Analytics analytics;
+    private Tracking tracking;
 
     @Override
     public void onCreate() {
@@ -33,8 +34,8 @@ public class App extends Application {
     }
 
     private void initCrashTracking() {
-        CrashTracking crashTracking = new CrashTracking(new FabricFactory());
-        crashTracking.start(this);
+        tracking = new Tracking(new FabricFactory());
+        tracking.start(this);
     }
 
     private void initAnalytics() {
@@ -51,5 +52,9 @@ public class App extends Application {
 
     public Analytics getAnalytics() {
         return analytics;
+    }
+
+    public Tracking getTracking() {
+        return tracking;
     }
 }

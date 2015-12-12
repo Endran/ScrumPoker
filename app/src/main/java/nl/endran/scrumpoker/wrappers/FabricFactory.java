@@ -6,12 +6,18 @@ package nl.endran.scrumpoker.wrappers;
 
 import android.content.Context;
 
+import com.crashlytics.android.answers.Answers;
+
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
 
 public class FabricFactory {
 
     public Fabric create(Context context, Kit... kits) {
-       return Fabric.with(context, kits);
+        return Fabric.with(context, kits);
+    }
+
+    public Answers getAnswers() {
+        return Answers.getInstance();
     }
 }
