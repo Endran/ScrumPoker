@@ -18,17 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import nl.endran.scrumpoker.App;
 import nl.endran.scrumpoker.Preferences;
 import nl.endran.scrumpoker.R;
-import nl.endran.scrumpoker.nearby.NearbyHelper;
 import nl.endran.scrumpoker.util.ShakeManager;
+import nl.endran.scrumpoker.wrappers.Tracking;
 
 public class QuickSettingsFragment extends Fragment {
 
@@ -62,12 +62,15 @@ public class QuickSettingsFragment extends Fragment {
     private Listener listener;
     private Preferences preferences;
     private ShakeManager shakeManager;
-    private NearbyHelper nearbyHelper;
+    private Tracking tracking;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_selection_background, container, false);
         ButterKnife.bind(this, rootView);
+
+        App app = (App) rootView.getContext().getApplicationContext();
+        tracking = app.getTracking();
 
         fab.setVisibility(View.INVISIBLE);
 
@@ -80,11 +83,12 @@ public class QuickSettingsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        tracking = null;
     }
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        Answers.getInstance().logCustom(new CustomEvent("Reveal")
+        tracking.logCustom(new CustomEvent("Reveal")
                 .putCustomAttribute("Type", "Click"));
         informListener();
     }
@@ -112,7 +116,7 @@ public class QuickSettingsFragment extends Fragment {
         viewQuickSettings.setVisibility(shouldShowQuickSettings ? View.VISIBLE : View.INVISIBLE);
 
         if (!shouldHideAfterSelection) {
-            Answers.getInstance().logCustom(new CustomEvent("Reveal")
+            tracking.logCustom(new CustomEvent("Reveal")
                     .putCustomAttribute("Type", "Instant"));
             informListener();
         } else if (shouldRevealAfterShake) {
@@ -125,10 +129,10 @@ public class QuickSettingsFragment extends Fragment {
             @Override
             public void onShake() {
                 Context context = getContext();
-                if (context != null) {
+                if (context != null && tracking != null) {
                     Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                     v.vibrate(500);
-                    Answers.getInstance().logCustom(new CustomEvent("Reveal")
+                    tracking.logCustom(new CustomEvent("Reveal")
                             .putCustomAttribute("Type", "Shake"));
                     informListener();
                 }
@@ -195,9 +199,5 @@ public class QuickSettingsFragment extends Fragment {
 
     public void setPreferences(final Preferences preferences) {
         this.preferences = preferences;
-    }
-
-    public void setNearbyHelper(final NearbyHelper nearbyHelper) {
-        this.nearbyHelper = nearbyHelper;
     }
 }
